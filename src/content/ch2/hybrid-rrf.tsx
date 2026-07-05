@@ -41,7 +41,7 @@ export default function Lesson() {
       <Section title="Код: EnsembleRetriever и самописный RRF">
         <CodeBlock
           language="python"
-          title="hybrid.py — гибрид из семинара недели 12"
+          title="hybrid.py — гибрид из семинара модуля 2"
           code={`from langchain_community.retrievers import BM25Retriever
 from langchain_classic.retrievers import EnsembleRetriever
 

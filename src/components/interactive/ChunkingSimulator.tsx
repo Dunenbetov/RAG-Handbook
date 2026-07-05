@@ -19,7 +19,7 @@ const COLORS = [
   'rgba(248, 113, 113, 0.14)',
   'rgba(96, 165, 250, 0.16)',
 ]
-const BORDERS = ['#22d3ee', '#8b5cf6', '#34d399', '#fbbf24', '#f87171', '#60a5fa']
+const BORDERS = ['var(--color-accent)', 'var(--color-violet)', 'var(--color-good)', 'var(--color-warn)', 'var(--color-bad)', '#60a5fa']
 
 type Strategy = 'fixed' | 'sliding' | 'recursive'
 
@@ -127,7 +127,7 @@ export function ChunkingSimulator() {
 
   return (
     <div className="card my-8 overflow-hidden">
-      <div className="flex items-center gap-2 border-b border-line bg-surface-2/60 px-5 py-3 text-sm font-semibold text-white">
+      <div className="flex items-center gap-2 border-b border-line bg-surface-2/60 px-5 py-3 text-sm font-semibold text-title">
         <FlaskConical className="size-4 text-accent" /> Симулятор чанкинга — покрути параметры и посмотри, как режется текст
       </div>
       <div className="p-5">
@@ -199,7 +199,7 @@ export function ChunkingSimulator() {
                   background: isOverlap
                     ? `repeating-linear-gradient(45deg, ${COLORS[seg.owners[0] % COLORS.length]}, ${COLORS[seg.owners[0] % COLORS.length]} 6px, ${COLORS[seg.owners[1] % COLORS.length]} 6px, ${COLORS[seg.owners[1] % COLORS.length]} 12px)`
                     : color,
-                  borderBottom: `2px solid ${isOverlap ? '#fbbf24' : border}`,
+                  borderBottom: `2px solid ${isOverlap ? 'var(--color-warn)' : border}`,
                 }}
                 title={isOverlap ? `Overlap: чанки ${seg.owners.map((o) => o + 1).join(' и ')}` : `Чанк ${seg.owners[0] + 1}`}
               >

@@ -8,6 +8,15 @@ import { useProgress } from '../lib/progress'
 // three.js тяжёлый — грузим фон отдельным чанком, страница работает и без него
 const HeroBackdrop = lazy(() => import('../components/three/HeroBackdrop'))
 
+/** 83 → «~1 ч 25 мин», 28 → «~30 мин» (минуты округляем до 5) */
+function formatMinutes(total: number) {
+  const rounded = Math.round(total / 5) * 5
+  if (rounded < 60) return `~${rounded} мин`
+  const h = Math.floor(rounded / 60)
+  const m = rounded % 60
+  return m > 0 ? `~${h} ч ${m} мин` : `~${h} ч`
+}
+
 const features = [
   { icon: <Gamepad2 className="size-5 text-accent" />, title: '10 интерактивных симуляторов', text: 'Chunking, эмбеддинги, hybrid search, RAGAS и граф знаний — всё можно потрогать руками.' },
   { icon: <GraduationCap className="size-5 text-violet" />, title: 'От нуля до практики', text: 'Никаких предварительных знаний: начинаем с «что такое LLM», заканчиваем гидом по своему проекту.' },
@@ -36,7 +45,7 @@ export function Home() {
         <div className="pointer-events-none absolute -top-32 left-1/2 h-96 w-[42rem] -translate-x-1/2 rounded-full bg-violet/15 blur-3xl" />
         <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} className="relative text-center">
           <div className="chip mx-auto mb-6 w-fit">Интерактивный учебник · RAG</div>
-          <h1 className="mx-auto mb-5 max-w-3xl text-4xl font-extrabold leading-tight tracking-tight text-white md:text-6xl">
+          <h1 className="mx-auto mb-5 max-w-3xl text-4xl font-extrabold leading-tight tracking-tight text-title md:text-6xl">
             Как на самом деле работает <span className="gradient-text">RAG</span>
           </h1>
           <p className="mx-auto mb-8 max-w-2xl text-lg leading-relaxed text-muted">
@@ -84,7 +93,7 @@ export function Home() {
             transition={{ delay: i * 0.08 }}
             className="card p-5"
           >
-            <div className="mb-2 flex items-center gap-2.5 font-semibold text-white">
+            <div className="mb-2 flex items-center gap-2.5 font-semibold text-title">
               {f.icon}
               {f.title}
             </div>
@@ -94,7 +103,7 @@ export function Home() {
       </div>
 
       {/* путь обучения */}
-      <h2 className="mb-6 text-2xl font-bold text-white">Путь обучения</h2>
+      <h2 className="mb-6 text-2xl font-bold text-title">Путь обучения</h2>
       <div className="space-y-4">
         {chapters.map((chapter, i) => {
           const doneCount = chapter.lessons.filter((l) => progress.isDone(lessonKey(chapter.id, l.id))).length
@@ -113,7 +122,7 @@ export function Home() {
               <div className="min-w-0 flex-1">
                 <div className="mb-1 flex flex-wrap items-center gap-2">
                   <span className="chip">{chapter.week}</span>
-                  <h3 className={`text-lg font-bold ${locked ? 'text-muted' : 'text-white'}`}>{chapter.title}</h3>
+                  <h3 className={`text-lg font-bold ${locked ? 'text-muted' : 'text-title'}`}>{chapter.title}</h3>
                 </div>
                 {locked ? (
                   <p className="text-sm text-muted">Откроется, когда пройдёшь остальные главы</p>
@@ -128,7 +137,7 @@ export function Home() {
                         />
                       </div>
                       <span className="text-xs text-muted">
-                        {doneCount}/{chapter.lessons.length} уроков
+                        {doneCount}/{chapter.lessons.length} уроков · {formatMinutes(chapter.lessons.reduce((s, l) => s + l.minutes, 0))}
                       </span>
                     </div>
                   </>

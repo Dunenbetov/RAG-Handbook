@@ -120,7 +120,7 @@ export function KnowledgeGraph() {
 
   return (
     <div className="card my-8 overflow-hidden">
-      <div className="flex items-center gap-2 border-b border-line bg-surface-2/60 px-5 py-3 text-sm font-semibold text-white">
+      <div className="flex items-center gap-2 border-b border-line bg-surface-2/60 px-5 py-3 text-sm font-semibold text-title">
         <Waypoints className="size-4 text-accent" /> Граф знаний «НейроТех» — выбери вопрос и смотри обход графа
       </div>
       <div className="p-5">
@@ -133,7 +133,7 @@ export function KnowledgeGraph() {
                 setRun((r) => r + 1)
               }}
               className={`rounded-xl border p-3 text-left text-[13px] font-medium transition-colors ${
-                qIdx === i ? 'border-accent bg-accent/10 text-white' : 'border-line bg-surface-2 text-muted hover:text-ink'
+                qIdx === i ? 'border-accent bg-accent/10 text-title' : 'border-line bg-surface-2 text-muted hover:text-ink'
               }`}
             >
               «{item.q}»
@@ -156,7 +156,7 @@ export function KnowledgeGraph() {
             const my = (from.y + to.y) / 2
             return (
               <g key={key}>
-                <line x1={from.x} y1={from.y} x2={to.x} y2={to.y} stroke="#1e2749" strokeWidth={1.5} />
+                <line x1={from.x} y1={from.y} x2={to.x} y2={to.y} stroke="var(--color-line)" strokeWidth={1.5} />
                 {onPath && (
                   <motion.line
                     key={`${key}-${run}`}
@@ -178,7 +178,7 @@ export function KnowledgeGraph() {
                   fontSize="8"
                   fontFamily="monospace"
                   textAnchor="middle"
-                  fill={onPath ? '#22d3ee' : '#5a6489'}
+                  fill={onPath ? 'var(--color-accent)' : 'var(--color-muted)'}
                   fontWeight={onPath ? 'bold' : 'normal'}
                 >
                   {e.label}
@@ -209,7 +209,7 @@ export function KnowledgeGraph() {
                   cx={n.x}
                   cy={n.y}
                   r={13}
-                  fill="#0c1124"
+                  fill="var(--color-surface)"
                   stroke={TYPE_COLORS[n.type]}
                   strokeWidth={onPath ? 3 : 1.5}
                   opacity={question && !onPath ? 0.4 : 1}
@@ -236,7 +236,7 @@ export function KnowledgeGraph() {
                   fontSize="9.5"
                   fontWeight={onPath ? 'bold' : 'normal'}
                   textAnchor="middle"
-                  fill={onPath ? '#e5eaff' : '#8b94b8'}
+                  fill={onPath ? 'var(--color-ink)' : 'var(--color-muted)'}
                   opacity={question && !onPath ? 0.5 : 1}
                 >
                   {n.label}

@@ -79,7 +79,7 @@ export function ExperimentPlanner() {
 
   return (
     <div className="card my-8 overflow-hidden">
-      <div className="flex items-center gap-2 border-b border-line bg-surface-2/60 px-5 py-3 text-sm font-semibold text-white">
+      <div className="flex items-center gap-2 border-b border-line bg-surface-2/60 px-5 py-3 text-sm font-semibold text-title">
         <ClipboardList className="size-4 text-accent" /> Планировщик экспериментов — собери свой greedy search
       </div>
       <div className="p-5">
@@ -91,7 +91,7 @@ export function ExperimentPlanner() {
               onClick={() => toggle(p.id)}
               title={p.hint}
               className={`rounded-xl border px-3 py-1.5 text-[13px] font-medium transition-colors ${
-                selected.has(p.id) ? 'border-accent bg-accent/15 text-white' : 'border-line bg-surface-2 text-muted hover:text-ink'
+                selected.has(p.id) ? 'border-accent bg-accent/15 text-title' : 'border-line bg-surface-2 text-muted hover:text-ink'
               }`}
             >
               {selected.has(p.id) ? '✓ ' : ''}
@@ -113,14 +113,14 @@ export function ExperimentPlanner() {
           <table className="w-full min-w-[640px] text-left text-[12.5px]">
             <thead className="sticky top-0 bg-surface-2">
               <tr className="border-b border-line">
-                <th className="px-3 py-2 font-semibold text-white">#</th>
-                <th className="px-3 py-2 font-semibold text-white">Что меняем</th>
+                <th className="px-3 py-2 font-semibold text-title">#</th>
+                <th className="px-3 py-2 font-semibold text-title">Что меняем</th>
                 {activeParams.map((p) => (
-                  <th key={p.id} className="px-3 py-2 font-semibold text-white">
+                  <th key={p.id} className="px-3 py-2 font-semibold text-title">
                     {p.name}
                   </th>
                 ))}
-                <th className="px-3 py-2 font-semibold text-white">RAGAS</th>
+                <th className="px-3 py-2 font-semibold text-title">RAGAS</th>
               </tr>
             </thead>
             <tbody>
@@ -158,10 +158,10 @@ export function ExperimentPlanner() {
         </div>
 
         <div className="rounded-xl border border-line bg-surface-2/50 p-4 text-[13.5px] leading-relaxed text-ink/80">
-          <strong className="text-white">Как читать план:</strong> значение в{' '}
+          <strong className="text-title">Как читать план:</strong> значение в{' '}
           <span className="font-mono font-bold text-accent">[скобках]</span> — то, что меняется в этом эксперименте;{' '}
           <span className="font-mono font-bold text-good">best</span> — берёшь значение-победителя из предыдущей серии. Меняй{' '}
-          <strong className="text-white">один параметр за раз</strong>, прогоняй весь Golden Dataset, записывай все 4 метрики RAGAS и
+          <strong className="text-title">один параметр за раз</strong>, прогоняй весь Golden Dataset, записывай все 4 метрики RAGAS и
           пиши вывод: стало лучше или хуже и почему.
         </div>
       </div>

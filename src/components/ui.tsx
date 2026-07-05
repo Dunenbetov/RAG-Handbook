@@ -29,7 +29,7 @@ export function Section({ title, children }: { title: string; children: ReactNod
       transition={{ duration: 0.45, ease: 'easeOut' }}
       className="mb-12"
     >
-      <h2 className="mb-4 text-2xl font-bold tracking-tight text-white">
+      <h2 className="mb-4 text-2xl font-bold tracking-tight text-title">
         <span className="mr-3 inline-block h-5 w-1.5 translate-y-0.5 rounded-full bg-gradient-to-b from-accent to-violet" />
         {title}
       </h2>
@@ -57,7 +57,7 @@ export function Callout({
   const s = calloutStyles[type]
   return (
     <div className={`my-6 rounded-2xl border ${s.border} ${s.bg} p-5`}>
-      <div className="mb-2 flex items-center gap-2 font-semibold text-white">
+      <div className="mb-2 flex items-center gap-2 font-semibold text-title">
         {s.icon}
         {title ?? s.label}
       </div>
@@ -72,7 +72,7 @@ export function Callout({
 export function Analogy({ title = 'Аналогия из жизни', children }: { title?: string; children: ReactNode }) {
   return (
     <div className="my-6 rounded-2xl border border-violet/40 bg-violet/5 p-5">
-      <div className="mb-2 flex items-center gap-2 font-semibold text-white">
+      <div className="mb-2 flex items-center gap-2 font-semibold text-title">
         <Sparkles className="size-5 text-violet" />
         {title}
       </div>
@@ -86,7 +86,7 @@ export function KeyIdea({ children }: { children: ReactNode }) {
   return (
     <div className="my-6 rounded-2xl bg-gradient-to-r from-accent/15 to-violet/15 p-[1px]">
       <div className="rounded-2xl bg-surface p-5">
-        <div className="mb-2 flex items-center gap-2 font-semibold text-white">
+        <div className="mb-2 flex items-center gap-2 font-semibold text-title">
           <Target className="size-5 text-accent" />
           Главная мысль
         </div>
@@ -96,13 +96,13 @@ export function KeyIdea({ children }: { children: ReactNode }) {
   )
 }
 
-/** Связь урока с Project 4 */
+/** Связь урока с практическим проектом */
 export function ProjectNote({ children }: { children: ReactNode }) {
   return (
     <div className="my-6 rounded-2xl border border-warn/30 bg-warn/5 p-5">
-      <div className="mb-2 flex items-center gap-2 font-semibold text-white">
+      <div className="mb-2 flex items-center gap-2 font-semibold text-title">
         <BookOpen className="size-5 text-warn" />
-        Где это в Project 4
+        Как это применить в проекте
       </div>
       <div className="text-[15.5px] leading-relaxed text-ink/85 [&>p]:mb-3 [&>p:last-child]:mb-0 [&_ul]:list-disc [&_ul]:pl-5 [&_ul]:space-y-1">
         {children}
@@ -129,7 +129,7 @@ export function Tbl({ head, rows }: { head: ReactNode[]; rows: ReactNode[][] }) 
         <thead>
           <tr className="border-b border-line bg-surface-2">
             {head.map((h, i) => (
-              <th key={i} className="px-4 py-3 font-semibold text-white">
+              <th key={i} className="px-4 py-3 font-semibold text-title">
                 {h}
               </th>
             ))}
@@ -168,7 +168,7 @@ export function Steps({ items }: { items: { title: ReactNode; body: ReactNode }[
             {i + 1}
           </div>
           <div>
-            <div className="mb-1 font-semibold text-white">{step.title}</div>
+            <div className="mb-1 font-semibold text-title">{step.title}</div>
             <div className="text-[15px] leading-relaxed text-ink/80">{step.body}</div>
           </div>
         </motion.div>
@@ -191,7 +191,7 @@ export function VS({
     <div className="my-6 grid gap-4 md:grid-cols-2">
       {[left, right].map((side, i) => (
         <div key={i} className={`rounded-2xl border ${tone(side.tone)} bg-surface p-5`}>
-          <div className="mb-2 font-semibold text-white">{side.title}</div>
+          <div className="mb-2 font-semibold text-title">{side.title}</div>
           <div className="text-[15px] leading-relaxed text-ink/80 [&>p]:mb-2 [&_ul]:list-disc [&_ul]:pl-5 [&_ul]:space-y-1">
             {side.children}
           </div>

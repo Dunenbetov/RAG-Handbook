@@ -37,7 +37,7 @@ export function GlossaryPage() {
   return (
     <div className="mx-auto max-w-4xl px-5 pb-24 pt-10 md:px-8">
       <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}>
-        <h1 className="mb-2 text-3xl font-extrabold text-white md:text-4xl">Глоссарий</h1>
+        <h1 className="mb-2 text-3xl font-extrabold text-title md:text-4xl">Глоссарий</h1>
         <p className="mb-8 text-muted">
           {glossary.length} терминов модуля RAG — от базовых понятий до GraphRAG. Кликай на термины прямо в уроках.
         </p>
@@ -85,7 +85,7 @@ export function GlossaryPage() {
             className={`card p-5 target:border-accent ${location.hash.slice(1) === t.id ? 'border-accent/70' : ''}`}
           >
             <div className="mb-1.5 flex flex-wrap items-baseline gap-2">
-              <h3 className="text-lg font-bold text-white">{t.term}</h3>
+              <h3 className="text-lg font-bold text-title">{t.term}</h3>
               {t.en && <span className="font-mono text-xs text-muted">{t.en}</span>}
               <span className="chip ml-auto">{chapterNames.get(t.chapter)}</span>
             </div>

@@ -41,7 +41,7 @@ export function LessonPage() {
             Урок {lessonIndex + 1} из {chapter.lessons.length}
           </span>
         </div>
-        <h1 className="mb-3 text-3xl font-extrabold tracking-tight text-white md:text-4xl">{lesson.title}</h1>
+        <h1 className="mb-3 text-3xl font-extrabold tracking-tight text-title md:text-4xl">{lesson.title}</h1>
         <div className="mb-8 flex flex-wrap items-center gap-3">
           <span className="chip">
             <Clock className="size-3.5" /> ~{lesson.minutes} мин

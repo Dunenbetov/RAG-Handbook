@@ -125,7 +125,7 @@ export function ProjectChecklist() {
       <div className="card sticky top-14 z-10 mb-5 flex items-center gap-4 p-4 backdrop-blur lg:top-2">
         <div className="relative flex size-16 shrink-0 items-center justify-center">
           <svg viewBox="0 0 64 64" className="absolute inset-0 -rotate-90">
-            <circle cx="32" cy="32" r="27" fill="none" stroke="#1e2749" strokeWidth="6" />
+            <circle cx="32" cy="32" r="27" fill="none" stroke="var(--color-line)" strokeWidth="6" />
             <motion.circle
               cx="32"
               cy="32"
@@ -144,10 +144,10 @@ export function ProjectChecklist() {
               </linearGradient>
             </defs>
           </svg>
-          <span className="text-[13px] font-bold text-white">{Math.round(earned)}</span>
+          <span className="text-[13px] font-bold text-title">{Math.round(earned)}</span>
         </div>
         <div>
-          <div className="font-bold text-white">
+          <div className="font-bold text-title">
             ~{Math.round(earned)} из 130 баллов
           </div>
           <div className="text-sm text-muted">
@@ -161,7 +161,7 @@ export function ProjectChecklist() {
         return (
           <div key={group.title} className="card mb-4 overflow-hidden">
             <div className="flex items-center justify-between border-b border-line bg-surface-2/60 px-5 py-3">
-              <span className="text-sm font-semibold text-white">{group.title}</span>
+              <span className="text-sm font-semibold text-title">{group.title}</span>
               <span className={`text-xs font-bold ${done === group.items.length ? 'text-good' : 'text-muted'}`}>
                 {done}/{group.items.length}
               </span>

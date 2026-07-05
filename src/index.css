@@ -7,34 +7,56 @@
   --color-line: #1e2749;
   --color-ink: #e5eaff;
   --color-muted: #8b94b8;
+  --color-title: #ffffff;
   --color-accent: #22d3ee;
   --color-violet: #8b5cf6;
   --color-good: #34d399;
   --color-bad: #f87171;
   --color-warn: #fbbf24;
-  --font-sans: "Inter", "SF Pro Text", system-ui, -apple-system, "Segoe UI", sans-serif;
-  --font-mono: "JetBrains Mono", "SF Mono", ui-monospace, Menlo, monospace;
+  --font-sans: "Inter Variable", "Inter", "SF Pro Text", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "JetBrains Mono Variable", "JetBrains Mono", "SF Mono", ui-monospace, Menlo, monospace;
+}
+
+/* светлая тема: переопределяем токены — все Tailwind-утилиты подхватят через var() */
+html.light {
+  --color-bg: #f6f7fb;
+  --color-surface: #ffffff;
+  --color-surface-2: #edf0f9;
+  --color-line: #dde2f0;
+  --color-ink: #2a3352;
+  --color-muted: #667094;
+  --color-title: #12172e;
+  --color-accent: #0891b2;
+  --color-violet: #7c3aed;
+  --color-good: #059669;
+  --color-bad: #dc2626;
+  --color-warn: #b45309;
 }
 
 html {
   scroll-behavior: smooth;
+  color-scheme: dark;
+}
+html.light {
+  color-scheme: light;
 }
 
 body {
   background: var(--color-bg);
   color: var(--color-ink);
   font-family: var(--font-sans);
+  font-feature-settings: "cv11"; /* одноэтажная «a» у Inter — дружелюбнее для учебного текста */
   -webkit-font-smoothing: antialiased;
 }
 
 ::selection {
-  background: rgba(139, 92, 246, 0.45);
+  background: color-mix(in srgb, var(--color-violet) 40%, transparent);
 }
 
 /* тонкий скроллбар в теме сайта */
 * {
   scrollbar-width: thin;
-  scrollbar-color: #2a3560 transparent;
+  scrollbar-color: var(--color-line) transparent;
 }
 
 @layer components {
@@ -42,7 +64,7 @@ body {
     @apply rounded-2xl border border-line bg-surface;
   }
   .gradient-text {
-    background: linear-gradient(90deg, #22d3ee, #8b5cf6);
+    background: linear-gradient(90deg, var(--color-accent), var(--color-violet));
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
@@ -76,7 +98,7 @@ body {
   @apply list-decimal space-y-1.5 pl-6;
 }
 .lesson-body strong {
-  @apply font-semibold text-white;
+  @apply font-semibold text-title;
 }
 .lesson-body a {
   @apply text-accent underline decoration-accent/40 underline-offset-4 hover:decoration-accent;

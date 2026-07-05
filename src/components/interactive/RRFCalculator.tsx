@@ -3,7 +3,7 @@ import { motion } from 'framer-motion'
 import { Calculator } from 'lucide-react'
 
 const DOCS = ['Документ A', 'Документ B', 'Документ C', 'Документ D'] as const
-const COLORS = ['#22d3ee', '#8b5cf6', '#34d399', '#fbbf24']
+const COLORS = ['var(--color-accent)', 'var(--color-violet)', 'var(--color-good)', 'var(--color-warn)']
 
 /** Перестановка рангов: rankings[method][docIdx] = позиция (1..4) */
 const PRESETS = [
@@ -38,7 +38,7 @@ export function RRFCalculator() {
 
   return (
     <div className="card my-8 overflow-hidden">
-      <div className="flex items-center gap-2 border-b border-line bg-surface-2/60 px-5 py-3 text-sm font-semibold text-white">
+      <div className="flex items-center gap-2 border-b border-line bg-surface-2/60 px-5 py-3 text-sm font-semibold text-title">
         <Calculator className="size-4 text-accent" /> Калькулятор RRF — как два рейтинга сливаются в один
       </div>
       <div className="p-5">
@@ -48,7 +48,7 @@ export function RRFCalculator() {
               key={i}
               onClick={() => setPresetIdx(i)}
               className={`rounded-xl border px-3 py-1.5 text-[13px] font-medium transition-colors ${
-                i === presetIdx ? 'border-accent bg-accent/15 text-white' : 'border-line bg-surface-2 text-muted hover:text-ink'
+                i === presetIdx ? 'border-accent bg-accent/15 text-title' : 'border-line bg-surface-2 text-muted hover:text-ink'
               }`}
             >
               {p.name}
@@ -86,7 +86,7 @@ export function RRFCalculator() {
                 </span>
                 <span className="font-mono text-[12.5px] text-muted">
                   1/({k}+{r.r1}) + 1/({k}+{r.r2}) = {r.s1.toFixed(4)} + {r.s2.toFixed(4)} ={' '}
-                  <span className="font-bold text-white">{r.total.toFixed(4)}</span>
+                  <span className="font-bold text-title">{r.total.toFixed(4)}</span>
                 </span>
                 {pos === 0 && <span className="ml-auto text-xs font-semibold text-good">победитель</span>}
               </div>

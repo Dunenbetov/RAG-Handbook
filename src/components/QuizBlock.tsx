@@ -61,7 +61,7 @@ export function QuizBlock({ id, questions }: { id: string; questions: QuizQuesti
     return (
       <motion.div initial={{ opacity: 0, scale: 0.96 }} animate={{ opacity: 1, scale: 1 }} className="card p-8 text-center">
         <Trophy className={`mx-auto mb-4 size-12 ${pct >= 80 ? 'text-warn' : 'text-muted'}`} />
-        <div className="mb-1 text-3xl font-bold text-white">
+        <div className="mb-1 text-3xl font-bold text-title">
           {score} из {questions.length}
         </div>
         <div className="mb-4 text-muted">
@@ -111,7 +111,7 @@ export function QuizBlock({ id, questions }: { id: string; questions: QuizQuesti
           exit={{ opacity: 0, x: -30 }}
           transition={{ duration: 0.25 }}
         >
-          <h3 className="my-5 text-lg font-semibold leading-snug text-white">{question.q}</h3>
+          <h3 className="my-5 text-lg font-semibold leading-snug text-title">{question.q}</h3>
           <div className="space-y-2.5">
             {question.options.map((opt, idx) => {
               const isCorrect = idx === question.answer
@@ -125,7 +125,7 @@ export function QuizBlock({ id, questions }: { id: string; questions: QuizQuesti
                   className={`flex w-full items-start gap-3 rounded-xl border p-3.5 text-left text-[15px] transition-all ${
                     revealed
                       ? isCorrect
-                        ? 'border-good/60 bg-good/10 text-white'
+                        ? 'border-good/60 bg-good/10 text-title'
                         : isPicked
                           ? 'border-bad/60 bg-bad/10 text-ink/80'
                           : 'border-line bg-surface-2/40 text-muted'
@@ -157,7 +157,7 @@ export function QuizBlock({ id, questions }: { id: string; questions: QuizQuesti
                 className="overflow-hidden"
               >
                 <div className={`mt-4 rounded-xl border p-4 text-[14.5px] leading-relaxed ${picked === question.answer ? 'border-good/40 bg-good/5' : 'border-warn/40 bg-warn/5'}`}>
-                  <span className="font-semibold text-white">{picked === question.answer ? 'Верно! ' : 'Не совсем. '}</span>
+                  <span className="font-semibold text-title">{picked === question.answer ? 'Верно! ' : 'Не совсем. '}</span>
                   <span className="text-ink/85">{question.explain}</span>
                 </div>
                 <button onClick={next} className="btn-primary mt-4">

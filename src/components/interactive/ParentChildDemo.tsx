@@ -22,7 +22,7 @@ export function ParentChildDemo() {
   return (
     <div className="card my-8 overflow-hidden">
       <div className="flex items-center justify-between border-b border-line bg-surface-2/60 px-5 py-3">
-        <span className="flex items-center gap-2 text-sm font-semibold text-white">
+        <span className="flex items-center gap-2 text-sm font-semibold text-title">
           <Layers className="size-4 text-accent" /> Parent-Child: ищем мелко — читаем крупно
         </span>
         <button onClick={reset} className="rounded-lg border border-line bg-surface p-1.5 text-muted hover:border-accent/60">
@@ -32,7 +32,7 @@ export function ParentChildDemo() {
       <div className="p-5">
         {/* запрос */}
         <div className="mb-4 flex items-center gap-3">
-          <div className="flex items-center gap-2 rounded-xl border border-violet/50 bg-violet/10 px-4 py-2.5 text-[14px] font-medium text-white">
+          <div className="flex items-center gap-2 rounded-xl border border-violet/50 bg-violet/10 px-4 py-2.5 text-[14px] font-medium text-title">
             <HelpCircle className="size-4 shrink-0 text-violet" /> «Какой доход от грузовых перевозок в 2024?»
           </div>
           {phase === 0 && (
@@ -49,7 +49,7 @@ export function ParentChildDemo() {
         <div className="mb-4 grid gap-2 sm:grid-cols-3">
           <motion.div
             animate={{
-              borderColor: phase >= 1 ? '#34d399' : '#1e2749',
+              borderColor: phase >= 1 ? 'var(--color-good)' : 'var(--color-line)',
               scale: phase === 1 ? 1.03 : 1,
               boxShadow: phase >= 1 ? '0 0 24px rgba(52,211,153,0.25)' : '0 0 0 rgba(0,0,0,0)',
             }}
@@ -82,7 +82,7 @@ export function ParentChildDemo() {
               </div>
               <div className="mb-4 rounded-xl border border-violet/40 bg-violet/5 p-4 text-[13px] leading-relaxed">
                 <span className="text-ink/70">{PARENT_TEXT.before}</span>
-                <mark className="rounded bg-good/25 px-1 py-0.5 text-white">{PARENT_TEXT.hit}</mark>
+                <mark className="rounded bg-good/25 px-1 py-0.5 text-title">{PARENT_TEXT.hit}</mark>
                 <span className="text-ink/70">{PARENT_TEXT.after}</span>
               </div>
               {phase === 2 && (
@@ -104,8 +104,8 @@ export function ParentChildDemo() {
                 <Bot className="size-3.5" /> Ответ LLM
               </div>
               <p className="text-[14px] leading-relaxed text-ink/90">
-                Доходы КТЖ от грузовых перевозок в 2024 году составили <strong className="text-white">1 875,6 млрд тенге</strong> — на{' '}
-                <strong className="text-white">11,5% больше</strong>, чем в 2023 году (1 682,6 млрд тенге).
+                Доходы КТЖ от грузовых перевозок в 2024 году составили <strong className="text-title">1 875,6 млрд тенге</strong> — на{' '}
+                <strong className="text-title">11,5% больше</strong>, чем в 2023 году (1 682,6 млрд тенге).
               </p>
               <p className="mt-2.5 text-[12.5px] text-muted">
                 Модель увидела не только найденную строчку, но и весь родительский блок — поэтому смогла сравнить с 2023 годом и не

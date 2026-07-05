@@ -3,6 +3,7 @@ import { Canvas } from '@react-three/fiber'
 import { Html, Line, OrbitControls } from '@react-three/drei'
 import { motion } from 'framer-motion'
 import { Rotate3d } from 'lucide-react'
+import { useTheme } from '../../lib/theme'
 
 type V3 = [number, number, number]
 
@@ -59,6 +60,8 @@ type Ranked = { item: Item; i: number; sim: number }[]
 
 function Scene({ queryIdx, ranked }: { queryIdx: number; ranked: Ranked }) {
   const query = QUERIES[queryIdx]
+  const theme = useTheme()
+  const axisColor = theme === 'dark' ? '#2a3560' : '#c3cbe4'
   const top3 = new Set(ranked.slice(0, 3).map((r) => r.i))
   const qp = pos(query.v)
 
@@ -68,9 +71,9 @@ function Scene({ queryIdx, ranked }: { queryIdx: number; ranked: Ranked }) {
       <directionalLight position={[4, 6, 5]} intensity={0.8} />
 
       {/* оси трёх измерений */}
-      <Line points={[[-3, 0, 0], [3, 0, 0]]} color="#2a3560" lineWidth={1} dashed dashSize={0.12} gapSize={0.1} />
-      <Line points={[[0, -3, 0], [0, 3, 0]]} color="#2a3560" lineWidth={1} dashed dashSize={0.12} gapSize={0.1} />
-      <Line points={[[0, 0, -3], [0, 0, 3]]} color="#2a3560" lineWidth={1} dashed dashSize={0.12} gapSize={0.1} />
+      <Line points={[[-3, 0, 0], [3, 0, 0]]} color={axisColor} lineWidth={1} dashed dashSize={0.12} gapSize={0.1} />
+      <Line points={[[0, -3, 0], [0, 3, 0]]} color={axisColor} lineWidth={1} dashed dashSize={0.12} gapSize={0.1} />
+      <Line points={[[0, 0, -3], [0, 0, 3]]} color={axisColor} lineWidth={1} dashed dashSize={0.12} gapSize={0.1} />
 
       {/* документы */}
       {ITEMS.map((item, i) => {
@@ -87,7 +90,7 @@ function Scene({ queryIdx, ranked }: { queryIdx: number; ranked: Ranked }) {
               />
             </mesh>
             <Html center distanceFactor={5.5} position={[0, 0.22, 0]} className="pointer-events-none">
-              <div className={`whitespace-nowrap text-[11px] ${isTop ? 'font-medium text-white' : 'text-muted/70'}`}>
+              <div className={`whitespace-nowrap text-[11px] ${isTop ? 'font-medium text-title' : 'text-muted/70'}`}>
                 {short(item.text)}
               </div>
             </Html>
@@ -103,7 +106,7 @@ function Scene({ queryIdx, ranked }: { queryIdx: number; ranked: Ranked }) {
           <group key={item.text}>
             <Line points={[qp, p]} color="#8b5cf6" lineWidth={rank === 0 ? 2 : 1.2} transparent opacity={0.85 - rank * 0.2} />
             <Html center distanceFactor={5.5} position={mid} className="pointer-events-none">
-              <span className="font-mono text-[10px] text-violet-300">{sim.toFixed(2)}</span>
+              <span className={`font-mono text-[10px] ${theme === 'dark' ? 'text-violet-300' : 'text-violet-700'}`}>{sim.toFixed(2)}</span>
             </Html>
           </group>
         )
@@ -116,7 +119,7 @@ function Scene({ queryIdx, ranked }: { queryIdx: number; ranked: Ranked }) {
           <meshStandardMaterial color="#8b5cf6" emissive="#8b5cf6" emissiveIntensity={0.9} />
         </mesh>
         <Html center distanceFactor={5.5} position={[0, -0.3, 0]} className="pointer-events-none">
-          <span className="whitespace-nowrap text-[11px] font-semibold text-violet-300">запрос</span>
+          <span className={`whitespace-nowrap text-[11px] font-semibold ${theme === 'dark' ? 'text-violet-300' : 'text-violet-700'}`}>запрос</span>
         </Html>
       </group>
 
@@ -136,7 +139,7 @@ export function Embedding3D() {
 
   return (
     <div className="card my-8 overflow-hidden">
-      <div className="flex items-center gap-2 border-b border-line bg-surface-2/60 px-5 py-3 text-sm font-semibold text-white">
+      <div className="flex items-center gap-2 border-b border-line bg-surface-2/60 px-5 py-3 text-sm font-semibold text-title">
         <Rotate3d className="size-4 text-accent" /> Пространство эмбеддингов — тексты с похожим смыслом живут рядом
       </div>
       <div className="p-5">
@@ -146,7 +149,7 @@ export function Embedding3D() {
               key={i}
               onClick={() => setQueryIdx(i)}
               className={`rounded-xl border px-3 py-1.5 text-[13px] font-medium transition-colors ${
-                i === queryIdx ? 'border-violet bg-violet/15 text-white' : 'border-line bg-surface-2 text-muted hover:text-ink'
+                i === queryIdx ? 'border-violet bg-violet/15 text-title' : 'border-line bg-surface-2 text-muted hover:text-ink'
               }`}
             >
               «{q.text}»

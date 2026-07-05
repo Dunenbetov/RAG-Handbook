@@ -1,12 +1,17 @@
 import { useEffect, useMemo, useRef } from 'react'
 import { Canvas, useFrame } from '@react-three/fiber'
 import * as THREE from 'three'
+import { useTheme, type Theme } from '../../lib/theme'
 
 const CLUSTERS = 8
 const PER_CLUSTER = 40
 const COUNT = CLUSTERS * PER_CLUSTER
-const ACCENT = new THREE.Color('#22d3ee')
-const VIOLET = new THREE.Color('#8b5cf6')
+
+// на тёмном фоне светящиеся точки (additive), на светлом — насыщенные тёмные (normal)
+const PALETTE: Record<Theme, { accent: THREE.Color; violet: THREE.Color; line: string }> = {
+  dark: { accent: new THREE.Color('#22d3ee'), violet: new THREE.Color('#8b5cf6'), line: '#8b5cf6' },
+  light: { accent: new THREE.Color('#0e7490'), violet: new THREE.Color('#6d28d9'), line: '#7c3aed' },
+}
 
 // приближение нормального распределения — облако гуще к центру
 function randn() {
@@ -28,7 +33,7 @@ function makeCircleTexture() {
   return new THREE.CanvasTexture(canvas)
 }
 
-function Cloud() {
+function Cloud({ theme }: { theme: Theme }) {
   const group = useRef<THREE.Group>(null)
   const pointer = useRef({ x: 0, y: 0 })
 
@@ -61,6 +66,7 @@ function Cloud() {
       }
     }
 
+    const { accent, violet } = PALETTE[theme]
     const positions = new Float32Array(COUNT * 3)
     const colors = new Float32Array(COUNT * 3)
     const c = new THREE.Color()
@@ -68,7 +74,7 @@ function Cloud() {
       positions.set([v.x, v.y, v.z], i * 3)
       // цвет кодирует кластер (с лёгким разбросом) — свой «оттенок смысла» у каждой темы
       const t = clusterOf[i] / (CLUSTERS - 1)
-      c.lerpColors(ACCENT, VIOLET, Math.min(1, Math.max(0, t + (Math.random() - 0.5) * 0.15)))
+      c.lerpColors(accent, violet, Math.min(1, Math.max(0, t + (Math.random() - 0.5) * 0.15)))
       colors.set([c.r, c.g, c.b], i * 3)
     })
 
@@ -84,7 +90,7 @@ function Cloud() {
       }
     }
     return { positions, colors, linePositions: new Float32Array(segments), circleTexture: makeCircleTexture() }
-  }, [])
+  }, [theme])
 
   useFrame((_, delta) => {
     if (!group.current) return
@@ -95,33 +101,42 @@ function Cloud() {
 
   return (
     <group ref={group} rotation={[0.1, 0, 0]}>
-      <points>
+      <points key={`pts-${theme}`}>
         <bufferGeometry>
           <bufferAttribute attach="attributes-position" args={[positions, 3]} />
           <bufferAttribute attach="attributes-color" args={[colors, 3]} />
         </bufferGeometry>
         <pointsMaterial
+          key={`pm-${theme}`}
           map={circleTexture}
           size={0.09}
           sizeAttenuation
           vertexColors
           transparent
-          opacity={0.9}
+          opacity={theme === 'dark' ? 0.9 : 0.8}
           depthWrite={false}
-          blending={THREE.AdditiveBlending}
+          blending={theme === 'dark' ? THREE.AdditiveBlending : THREE.NormalBlending}
         />
       </points>
-      <lineSegments>
+      <lineSegments key={`seg-${theme}`}>
         <bufferGeometry>
           <bufferAttribute attach="attributes-position" args={[linePositions, 3]} />
         </bufferGeometry>
-        <lineBasicMaterial color="#8b5cf6" transparent opacity={0.18} depthWrite={false} blending={THREE.AdditiveBlending} />
+        <lineBasicMaterial
+          key={`lm-${theme}`}
+          color={PALETTE[theme].line}
+          transparent
+          opacity={theme === 'dark' ? 0.18 : 0.3}
+          depthWrite={false}
+          blending={theme === 'dark' ? THREE.AdditiveBlending : THREE.NormalBlending}
+        />
       </lineSegments>
     </group>
   )
 }
 
 export default function HeroBackdrop() {
+  const theme = useTheme()
   const mask = 'radial-gradient(ellipse 80% 62% at 50% 42%, black 45%, transparent 82%)'
   return (
     <div className="pointer-events-none absolute inset-x-0 -top-24 h-[58rem]" style={{ maskImage: mask, WebkitMaskImage: mask }}>
@@ -130,7 +145,7 @@ export default function HeroBackdrop() {
         dpr={[1, 1.5]}
         gl={{ alpha: true, antialias: true, powerPreference: 'low-power' }}
       >
-        <Cloud />
+        <Cloud theme={theme} />
       </Canvas>
     </div>
   )

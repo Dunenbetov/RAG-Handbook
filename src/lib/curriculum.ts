@@ -38,7 +38,7 @@ export const chapters: Chapter[] = [
     num: 1,
     title: 'Основы RAG',
     subtitle: 'Пайплайн от документа до ответа: chunking, эмбеддинги, векторные БД, поиск',
-    week: 'Неделя 11',
+    week: 'Модуль 1',
     icon: Blocks,
     lessons: [
       { id: 'pipeline', title: 'Анатомия RAG-пайплайна', description: 'Шесть этапов: от документов до ответа', minutes: 10 },
@@ -47,7 +47,7 @@ export const chapters: Chapter[] = [
       { id: 'vector-db', title: 'Векторные базы данных', description: 'ChromaDB, Pinecone, Qdrant и как работает HNSW', minutes: 10 },
       { id: 'retrieval', title: 'Поиск: Dense, BM25 и Hybrid', description: 'Почему «Статья 150» ломает семантический поиск', minutes: 12 },
       { id: 'metrics', title: 'Метрики качества поиска', description: 'Hit Rate, Recall@k, Precision@k и MRR', minutes: 9 },
-      { id: 'seminar', title: 'Семинар: RAG-юрист по кодексам РК', description: 'Реальный пайплайн недели 11 в коде', minutes: 12 },
+      { id: 'seminar', title: 'Семинар: RAG-юрист по кодексам РК', description: 'Собираем настоящий пайплайн в коде', minutes: 12 },
       { id: 'quiz', title: 'Квиз: основы RAG', description: 'Вопросы уровня собеседования', minutes: 6 },
     ],
   },
@@ -56,7 +56,7 @@ export const chapters: Chapter[] = [
     num: 2,
     title: 'Advanced RAG',
     subtitle: 'Что делать, когда наивный RAG не справляется: 6 техник улучшения',
-    week: 'Неделя 12',
+    week: 'Модуль 2',
     icon: Rocket,
     lessons: [
       { id: 'naive-problems', title: 'Где ломается Naive RAG', description: 'Разорванные таблицы, потерянные названия, перепутанные цифры', minutes: 8 },
@@ -74,7 +74,7 @@ export const chapters: Chapter[] = [
     num: 3,
     title: 'Оценивание и GraphRAG',
     subtitle: 'Как измерить качество RAG числами и когда графы лучше векторов',
-    week: 'Неделя 13',
+    week: 'Модуль 3',
     icon: BarChart3,
     lessons: [
       { id: 'why-eval', title: 'Зачем измерять качество RAG', description: 'Где именно ломается пайплайн и как это увидеть', minutes: 8 },
@@ -93,12 +93,12 @@ export const chapters: Chapter[] = [
     week: 'Проект',
     icon: Trophy,
     lessons: [
-      { id: 'overview', title: 'Разбор ТЗ: за что дают баллы', description: 'Структура заданий, данные и требования', minutes: 10 },
+      { id: 'overview', title: 'С чего начать свой проект', description: 'Постановка задачи, данные и требования к результату', minutes: 10 },
       { id: 'plan', title: 'План работ по шагам', description: 'От парсинга PDF до итогового вывода', minutes: 12 },
       { id: 'experiments', title: 'Эксперименты: greedy search', description: 'Как варьировать гиперпараметры + интерактивный планировщик', minutes: 12 },
-      { id: 'bonus-graphrag', title: 'Бонус: GraphRAG на +30 баллов', description: 'Neo4j, извлечение сущностей и сравнение с Vector RAG', minutes: 10 },
-      { id: 'pitfalls', title: 'Ловушки и советы на высший балл', description: 'Что реально оценивают и где все теряют баллы', minutes: 9 },
-      { id: 'checklist', title: 'Чек-лист сдачи', description: 'Интерактивный список на 130 баллов', minutes: 5 },
+      { id: 'bonus-graphrag', title: 'Бонус: добавляем GraphRAG', description: 'Neo4j, извлечение сущностей и сравнение с Vector RAG', minutes: 10 },
+      { id: 'pitfalls', title: 'Ловушки и советы', description: 'Где чаще всего теряют качество и как этого избежать', minutes: 9 },
+      { id: 'checklist', title: 'Итоговый чек-лист', description: 'Интерактивный список: ничего не забыть перед релизом', minutes: 5 },
     ],
   },
 ]

@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Highlight, themes } from 'prism-react-renderer'
 import { Check, Copy } from 'lucide-react'
+import { useTheme } from '../lib/theme'
 
 export function CodeBlock({
   code,
@@ -12,6 +13,7 @@ export function CodeBlock({
   title?: string
 }) {
   const [copied, setCopied] = useState(false)
+  const theme = useTheme()
   const trimmed = code.replace(/^\n+|\s+$/g, '')
 
   const copy = async () => {
@@ -25,7 +27,7 @@ export function CodeBlock({
   }
 
   return (
-    <div className="group my-6 overflow-hidden rounded-2xl border border-line bg-[#0a0e1f]">
+    <div className={`group my-6 overflow-hidden rounded-2xl border border-line ${theme === 'dark' ? 'bg-[#0a0e1f]' : 'bg-[#fbfcfe]'}`}>
       <div className="flex items-center justify-between border-b border-line px-4 py-2">
         <div className="flex items-center gap-2">
           <span className="flex gap-1.5">
@@ -43,7 +45,7 @@ export function CodeBlock({
           {copied ? 'Скопировано' : 'Копировать'}
         </button>
       </div>
-      <Highlight theme={themes.nightOwl} code={trimmed} language={language}>
+      <Highlight theme={theme === 'dark' ? themes.nightOwl : themes.oneLight} code={trimmed} language={language}>
         {({ style, tokens, getLineProps, getTokenProps }) => (
           <pre
             className="overflow-x-auto p-4 font-mono text-[13.5px] leading-relaxed"

@@ -51,7 +51,7 @@ export default function Lesson() {
       </Section>
 
       <Section title="Реализация: ParentDocumentRetriever">
-        <p>В LangChain всё уже готово — код с семинара недели 12:</p>
+        <p>В LangChain всё уже готово — код с семинара модуля 2:</p>
         <CodeBlock
           language="python"
           title="advanced_rag.py — parent-child из семинара"

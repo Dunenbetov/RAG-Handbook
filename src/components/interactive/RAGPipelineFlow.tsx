@@ -126,7 +126,7 @@ export function RAGPipelineFlow() {
         <motion.span animate={{ scale: active ? 1.25 : 1 }} className="mb-1">
           <s.icon className={`size-5 ${active ? 'text-accent' : passed ? 'text-good' : 'text-muted'}`} />
         </motion.span>
-        <span className={`text-center text-[10px] font-semibold leading-tight ${active ? 'text-white' : 'text-muted'}`}>
+        <span className={`text-center text-[10px] font-semibold leading-tight ${active ? 'text-title' : 'text-muted'}`}>
           {s.title}
         </span>
         {active && (
@@ -145,7 +145,7 @@ export function RAGPipelineFlow() {
   return (
     <div className="card my-8 overflow-hidden">
       <div className="flex items-center justify-between border-b border-line bg-surface-2/60 px-5 py-3">
-        <span className="flex items-center gap-2 text-sm font-semibold text-white">
+        <span className="flex items-center gap-2 text-sm font-semibold text-title">
           <Repeat className="size-4 text-accent" /> RAG-пайплайн в движении
         </span>
         <div className="flex gap-1.5">
@@ -220,7 +220,7 @@ export function RAGPipelineFlow() {
             transition={{ duration: 0.25 }}
             className="rounded-xl border border-line bg-surface-2/60 p-4"
           >
-            <div className="mb-1.5 flex items-center gap-2 font-semibold text-white">
+            <div className="mb-1.5 flex items-center gap-2 font-semibold text-title">
               <stage.icon className="size-5 text-accent" />
               Шаг {step + 1}/{STAGES.length}: {stage.title}
             </div>

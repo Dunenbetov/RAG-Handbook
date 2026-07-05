@@ -64,7 +64,7 @@ export function HybridSearchDemo() {
           <div
             key={d.id}
             className={`rounded-lg border px-2.5 py-2 text-[11.5px] leading-tight ${
-              d.id === q.relevant ? 'border-good/50 bg-good/10 text-white' : 'border-line bg-surface-2 text-muted'
+              d.id === q.relevant ? 'border-good/50 bg-good/10 text-title' : 'border-line bg-surface-2 text-muted'
             }`}
           >
             <span className="mr-1 font-mono font-bold" style={{ color }}>
@@ -80,7 +80,7 @@ export function HybridSearchDemo() {
 
   return (
     <div className="card my-8 overflow-hidden">
-      <div className="flex items-center gap-2 border-b border-line bg-surface-2/60 px-5 py-3 text-sm font-semibold text-white">
+      <div className="flex items-center gap-2 border-b border-line bg-surface-2/60 px-5 py-3 text-sm font-semibold text-title">
         <Scale className="size-4 text-accent" /> Гибридный поиск — двигай α и смотри, кто побеждает
       </div>
       <div className="p-5">
@@ -90,7 +90,7 @@ export function HybridSearchDemo() {
               key={i}
               onClick={() => setQueryIdx(i)}
               className={`rounded-xl border px-3 py-1.5 text-[13px] font-medium transition-colors ${
-                i === queryIdx ? 'border-accent bg-accent/15 text-white' : 'border-line bg-surface-2 text-muted hover:text-ink'
+                i === queryIdx ? 'border-accent bg-accent/15 text-title' : 'border-line bg-surface-2 text-muted hover:text-ink'
               }`}
             >
               {query.label}
@@ -103,7 +103,7 @@ export function HybridSearchDemo() {
         <div className="mb-5 rounded-xl border border-line bg-surface-2/50 p-4">
           <div className="mb-2 flex items-center justify-between text-sm">
             <span className="font-semibold text-warn">BM25 (ключевые слова)</span>
-            <span className="font-mono text-lg font-bold text-white">α = {alpha.toFixed(1)}</span>
+            <span className="font-mono text-lg font-bold text-title">α = {alpha.toFixed(1)}</span>
             <span className="font-semibold text-accent">Vector (смысл)</span>
           </div>
           <input
@@ -121,7 +121,7 @@ export function HybridSearchDemo() {
         </div>
 
         <div className="grid gap-4 sm:grid-cols-3">
-          <Column title="только BM25" docs={bm25Ranked} color="#fbbf24" />
+          <Column title="только BM25" docs={bm25Ranked} color="var(--color-warn)" />
           <div>
             <div className="mb-2 text-center text-xs font-semibold uppercase tracking-wide text-violet">
               Hybrid (α = {alpha.toFixed(1)})
@@ -134,7 +134,7 @@ export function HybridSearchDemo() {
                   transition={{ type: 'spring', stiffness: 300, damping: 28 }}
                   className={`rounded-lg border px-2.5 py-2 text-[11.5px] leading-tight ${
                     doc.id === q.relevant
-                      ? 'border-good bg-good/15 text-white shadow-lg shadow-good/10'
+                      ? 'border-good bg-good/15 text-title shadow-lg shadow-good/10'
                       : 'border-violet/30 bg-surface-2 text-muted'
                   }`}
                 >
@@ -150,7 +150,7 @@ export function HybridSearchDemo() {
               ))}
             </div>
           </div>
-          <Column title="только Vector" docs={vectorRanked} color="#22d3ee" />
+          <Column title="только Vector" docs={vectorRanked} color="var(--color-accent)" />
         </div>
 
         <div className={`mt-4 rounded-xl border p-3.5 text-[13.5px] leading-relaxed ${hybridWins ? 'border-good/40 bg-good/5 text-ink/85' : 'border-bad/40 bg-bad/5 text-ink/85'}`}>

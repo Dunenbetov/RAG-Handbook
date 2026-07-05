@@ -4,8 +4,14 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>RAG Handbook — интерактивный конспект</title>
-    <meta name="description" content="Интерактивный конспект модуля RAG: основы, Advanced RAG, RAGAS, GraphRAG и гид по Project 4" />
+    <title>RAG Handbook — интерактивный учебник</title>
+    <meta name="description" content="Интерактивный учебник по RAG: основы, Advanced RAG, оценивание через RAGAS, GraphRAG и практический гид по своему проекту" />
+    <script>
+      // применяем сохранённую тему до загрузки бандла, чтобы не мигало
+      try {
+        if (localStorage.getItem('rag-theme') === 'light') document.documentElement.classList.add('light')
+      } catch (e) {}
+    </script>
   </head>
   <body>
     <div id="root"></div>

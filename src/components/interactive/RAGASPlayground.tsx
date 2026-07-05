@@ -28,28 +28,28 @@ const METRICS: Record<
   faithfulness: {
     name: 'Faithfulness',
     target: 'Генерация',
-    color: '#34d399',
+    color: 'var(--color-good)',
     question: 'Все ли утверждения ответа подтверждены контекстом?',
     how: 'LLM-судья разбивает ответ на утверждения (claims) и проверяет каждое: есть ли оно в контексте. Ниже — какие claims подтвердились.',
   },
   relevancy: {
     name: 'Answer Relevancy',
     target: 'Генерация',
-    color: '#22d3ee',
+    color: 'var(--color-accent)',
     question: 'Отвечает ли ответ именно на заданный вопрос?',
     how: 'Судья генерирует из ответа вопросы, на которые тот отвечает, и сравнивает их эмбеддинги с исходным вопросом.',
   },
   recall: {
     name: 'Context Recall',
     target: 'Поиск',
-    color: '#8b5cf6',
+    color: 'var(--color-violet)',
     question: 'Все ли факты эталонного ответа найдены поиском?',
     how: 'Судья разбивает эталон (reference) на факты и проверяет, покрыты ли они найденными чанками. Ниже — что нашлось.',
   },
   precision: {
     name: 'Context Precision',
     target: 'Поиск',
-    color: '#fbbf24',
+    color: 'var(--color-warn)',
     question: 'Релевантны ли найденные чанки (нет ли мусора)?',
     how: 'Судья оценивает каждый найденный чанк: полезен ли он для ответа. Мусор в контексте снижает метрику — особенно если стоит высоко.',
   },
@@ -72,7 +72,7 @@ export function RAGASPlayground() {
 
   return (
     <div className="card my-8 overflow-hidden">
-      <div className="flex items-center gap-2 border-b border-line bg-surface-2/60 px-5 py-3 text-sm font-semibold text-white">
+      <div className="flex items-center gap-2 border-b border-line bg-surface-2/60 px-5 py-3 text-sm font-semibold text-title">
         <Microscope className="size-4 text-accent" /> RAGAS-плейграунд — посмотри, как судья считает каждую метрику
       </div>
       <div className="p-5">
@@ -170,7 +170,7 @@ export function RAGASPlayground() {
             exit={{ opacity: 0 }}
             className="mb-4 rounded-xl border border-line bg-surface-2/50 p-4"
           >
-            <div className="mb-1 font-semibold text-white" style={{ color: m.color }}>
+            <div className="mb-1 font-semibold text-title" style={{ color: m.color }}>
               {m.name}: {m.question}
             </div>
             <p className="mb-2.5 text-[13.5px] leading-relaxed text-ink/80">{m.how}</p>
@@ -186,7 +186,7 @@ export function RAGASPlayground() {
                   </div>
                 ))}
                 <div className="pt-1 font-mono text-[12.5px] text-muted">
-                  Faithfulness = 2 подтверждено / 3 всего = <span className="font-bold text-white">0.67</span>
+                  Faithfulness = 2 подтверждено / 3 всего = <span className="font-bold text-title">0.67</span>
                 </div>
               </div>
             )}
@@ -201,7 +201,7 @@ export function RAGASPlayground() {
                   </div>
                 ))}
                 <div className="pt-1 font-mono text-[12.5px] text-muted">
-                  Context Recall = 1 найдено / 2 факта эталона = <span className="font-bold text-white">0.50</span>
+                  Context Recall = 1 найдено / 2 факта эталона = <span className="font-bold text-title">0.50</span>
                 </div>
               </div>
             )}
@@ -210,14 +210,14 @@ export function RAGASPlayground() {
                 {spoiled
                   ? 'Релевантный чанк упал на 3-е место, топ занят мусором → precision@1 = 0, precision@2 = 0 → метрика рушится.'
                   : 'Релевантные чанки стоят на 1-м и 2-м местах, мусор — ниже → метрика высокая.'}{' '}
-                Context Precision = <span className="font-bold text-white">{scores.precision.toFixed(2)}</span>
+                Context Precision = <span className="font-bold text-title">{scores.precision.toFixed(2)}</span>
               </div>
             )}
             {metric === 'relevancy' && (
               <div className="text-[12.5px] leading-relaxed text-muted">
                 Из ответа судья сгенерирует вопросы вроде «какова базовая ставка в РК?» (близко к исходному → высокий скор) и «зачем нужна
                 базовая ставка?» (дальше от исходного → скор ниже). Среднее сходство ={' '}
-                <span className="font-mono font-bold text-white">{scores.relevancy.toFixed(2)}</span>
+                <span className="font-mono font-bold text-title">{scores.relevancy.toFixed(2)}</span>
               </div>
             )}
           </motion.div>
