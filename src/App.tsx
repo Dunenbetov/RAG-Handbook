@@ -1,0 +1,33 @@
+import { HashRouter, Navigate, Route, Routes, useParams } from 'react-router-dom'
+import { Sidebar } from './components/Sidebar'
+import { Home } from './pages/Home'
+import { LessonPage } from './pages/LessonPage'
+import { GlossaryPage } from './pages/GlossaryPage'
+import { getChapter, isChapterLocked } from './lib/curriculum'
+import { useProgress } from './lib/progress'
+
+/** /ch1 → первый урок главы */
+function ChapterRedirect() {
+  const { chapterId = '' } = useParams()
+  const chapter = getChapter(chapterId)
+  const progress = useProgress()
+  if (!chapter || isChapterLocked(chapterId, progress.done)) return <Navigate to="/" replace />
+  return <Navigate to={`/${chapter.id}/${chapter.lessons[0].id}`} replace />
+}
+
+export default function App() {
+  return (
+    <HashRouter>
+      <Sidebar />
+      <main className="lg:pl-72">
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/glossary" element={<GlossaryPage />} />
+          <Route path="/:chapterId" element={<ChapterRedirect />} />
+          <Route path="/:chapterId/:lessonId" element={<LessonPage />} />
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
+      </main>
+    </HashRouter>
+  )
+}

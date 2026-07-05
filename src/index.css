@@ -1,0 +1,86 @@
+@import "tailwindcss";
+
+@theme {
+  --color-bg: #070a16;
+  --color-surface: #0c1124;
+  --color-surface-2: #111735;
+  --color-line: #1e2749;
+  --color-ink: #e5eaff;
+  --color-muted: #8b94b8;
+  --color-accent: #22d3ee;
+  --color-violet: #8b5cf6;
+  --color-good: #34d399;
+  --color-bad: #f87171;
+  --color-warn: #fbbf24;
+  --font-sans: "Inter", "SF Pro Text", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "JetBrains Mono", "SF Mono", ui-monospace, Menlo, monospace;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--color-bg);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: rgba(139, 92, 246, 0.45);
+}
+
+/* тонкий скроллбар в теме сайта */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #2a3560 transparent;
+}
+
+@layer components {
+  .card {
+    @apply rounded-2xl border border-line bg-surface;
+  }
+  .gradient-text {
+    background: linear-gradient(90deg, #22d3ee, #8b5cf6);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .btn-primary {
+    @apply inline-flex items-center gap-2 rounded-xl px-5 py-2.5 font-semibold text-white transition-transform hover:scale-[1.03] active:scale-[0.98];
+    background: linear-gradient(90deg, #0891b2, #7c3aed);
+    box-shadow: 0 8px 30px rgba(124, 58, 237, 0.35);
+  }
+  .btn-ghost {
+    @apply inline-flex items-center gap-2 rounded-xl border border-line bg-surface-2 px-4 py-2 text-sm font-medium text-ink transition-colors hover:border-violet/60;
+  }
+  .chip {
+    @apply inline-flex items-center gap-1 rounded-full border border-line bg-surface-2 px-2.5 py-0.5 text-xs font-medium text-muted;
+  }
+}
+
+/* типографика уроков */
+.lesson-body {
+  @apply text-[16.5px] leading-[1.75] text-ink/90;
+}
+.lesson-body > p,
+.lesson-body > ul,
+.lesson-body > ol {
+  @apply mb-5;
+}
+.lesson-body ul {
+  @apply list-disc space-y-1.5 pl-6;
+}
+.lesson-body ol {
+  @apply list-decimal space-y-1.5 pl-6;
+}
+.lesson-body strong {
+  @apply font-semibold text-white;
+}
+.lesson-body a {
+  @apply text-accent underline decoration-accent/40 underline-offset-4 hover:decoration-accent;
+}
+.lesson-body code:not(pre code) {
+  @apply rounded-md border border-line bg-surface-2 px-1.5 py-0.5 font-mono text-[0.85em] text-accent;
+}
