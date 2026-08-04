@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef } from 'react'
 import { Canvas, useFrame } from '@react-three/fiber'
 import * as THREE from 'three'
+import { useMediaQuery, useReducedMotion } from '../../lib/motion'
 import { useTheme, type Theme } from '../../lib/theme'
 
 const CLUSTERS = 8
@@ -36,11 +37,7 @@ function makeCircleTexture() {
 function Cloud({ theme }: { theme: Theme }) {
   const group = useRef<THREE.Group>(null)
   const pointer = useRef({ x: 0, y: 0 })
-
-  const reduced = useMemo(
-    () => typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches,
-    [],
-  )
+  const reduced = useReducedMotion()
 
   useEffect(() => {
     const onMove = (e: MouseEvent) => {
@@ -137,6 +134,11 @@ function Cloud({ theme }: { theme: Theme }) {
 
 export default function HeroBackdrop() {
   const theme = useTheme()
+  const isMobile = useMediaQuery('(max-width: 1023px)')
+  const reducedMotion = useReducedMotion()
+
+  if (isMobile || reducedMotion) return null
+
   const mask = 'radial-gradient(ellipse 80% 62% at 50% 42%, black 45%, transparent 82%)'
   return (
     <div className="pointer-events-none absolute inset-x-0 -top-24 h-[58rem]" style={{ maskImage: mask, WebkitMaskImage: mask }}>

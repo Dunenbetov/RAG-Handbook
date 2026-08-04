@@ -3,6 +3,7 @@ import { Canvas } from '@react-three/fiber'
 import { Html, Line, OrbitControls } from '@react-three/drei'
 import { motion } from 'framer-motion'
 import { Rotate3d } from 'lucide-react'
+import { useMediaQuery, useReducedMotion } from '../../lib/motion'
 import { useTheme } from '../../lib/theme'
 
 type V3 = [number, number, number]
@@ -58,7 +59,7 @@ const short = (t: string) => (t.length > 21 ? t.slice(0, 20) + '…' : t)
 
 type Ranked = { item: Item; i: number; sim: number }[]
 
-function Scene({ queryIdx, ranked }: { queryIdx: number; ranked: Ranked }) {
+function Scene({ queryIdx, ranked, autoRotate }: { queryIdx: number; ranked: Ranked; autoRotate: boolean }) {
   const query = QUERIES[queryIdx]
   const theme = useTheme()
   const axisColor = theme === 'dark' ? '#2a3560' : '#c3cbe4'
@@ -123,7 +124,7 @@ function Scene({ queryIdx, ranked }: { queryIdx: number; ranked: Ranked }) {
         </Html>
       </group>
 
-      <OrbitControls enableZoom={false} enablePan={false} autoRotate autoRotateSpeed={0.7} />
+      <OrbitControls enableZoom={false} enablePan={false} autoRotate={autoRotate} autoRotateSpeed={0.7} />
     </>
   )
 }
@@ -131,6 +132,9 @@ function Scene({ queryIdx, ranked }: { queryIdx: number; ranked: Ranked }) {
 export function Embedding3D() {
   const [queryIdx, setQueryIdx] = useState(0)
   const query = QUERIES[queryIdx]
+  const reducedMotion = useReducedMotion()
+  const isMobile = useMediaQuery('(max-width: 639px)')
+  const dpr: [number, number] = isMobile ? [1, 1.25] : [1, 1.5]
 
   const ranked: Ranked = useMemo(
     () => ITEMS.map((item, i) => ({ item, i, sim: cosSim(query.v, item.v) })).sort((a, b) => b.sim - a.sim),
@@ -159,11 +163,11 @@ export function Embedding3D() {
 
         <div className="grid gap-4 lg:grid-cols-[1fr_240px]">
           <div className="relative h-[420px] overflow-hidden rounded-xl border border-line bg-bg/60">
-            <Canvas camera={{ position: [3.4, 2.4, 5.2], fov: 45 }} dpr={[1, 2]}>
-              <Scene queryIdx={queryIdx} ranked={ranked} />
+            <Canvas camera={{ position: [3.4, 2.4, 5.2], fov: 45 }} dpr={dpr}>
+              <Scene queryIdx={queryIdx} ranked={ranked} autoRotate={!reducedMotion} />
             </Canvas>
             <div className="pointer-events-none absolute bottom-3 right-3 flex items-center gap-1.5 rounded-lg border border-line bg-bg/80 px-2.5 py-1.5 text-[11px] text-muted backdrop-blur">
-              <Rotate3d className="size-3.5" /> потяни мышкой, чтобы вращать
+              <Rotate3d className="size-3.5" /> потяни пальцем или мышью, чтобы вращать
             </div>
           </div>
 

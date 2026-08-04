@@ -115,7 +115,7 @@ export function RAGPipelineFlow() {
           setStep(i)
           setPlaying(false)
         }}
-        className={`relative flex min-w-0 flex-1 flex-col items-center rounded-xl border px-1.5 py-2.5 transition-all ${
+        className={`relative flex min-w-[72px] flex-1 flex-col items-center rounded-xl border px-1.5 py-2.5 transition-all ${
           active
             ? 'border-accent bg-accent/10 shadow-lg shadow-accent/20'
             : passed
@@ -151,7 +151,7 @@ export function RAGPipelineFlow() {
         <div className="flex gap-1.5">
           <button
             onClick={() => setPlaying((p) => !p)}
-            className="rounded-lg border border-line bg-surface p-1.5 text-accent transition-colors hover:border-accent/60"
+            className="flex min-h-11 min-w-11 items-center justify-center rounded-lg border border-line bg-surface text-accent transition-colors hover:border-accent/60"
             title={playing ? 'Пауза' : 'Автопроигрывание'}
           >
             {playing ? <Pause className="size-4" /> : <Play className="size-4" />}
@@ -161,7 +161,7 @@ export function RAGPipelineFlow() {
               setStep((s) => Math.min(s + 1, STAGES.length - 1))
               setPlaying(false)
             }}
-            className="rounded-lg border border-line bg-surface p-1.5 text-ink transition-colors hover:border-accent/60"
+            className="flex min-h-11 min-w-11 items-center justify-center rounded-lg border border-line bg-surface text-ink transition-colors hover:border-accent/60"
             title="Следующий шаг"
           >
             <StepForward className="size-4" />
@@ -171,7 +171,7 @@ export function RAGPipelineFlow() {
               setStep(0)
               setPlaying(false)
             }}
-            className="rounded-lg border border-line bg-surface p-1.5 text-muted transition-colors hover:border-accent/60"
+            className="flex min-h-11 min-w-11 items-center justify-center rounded-lg border border-line bg-surface text-muted transition-colors hover:border-accent/60"
             title="Сначала"
           >
             <RotateCcw className="size-4" />
@@ -184,7 +184,7 @@ export function RAGPipelineFlow() {
         <div className="mb-1.5 text-[11px] font-semibold uppercase tracking-wider text-violet">
           Фаза 1 · Индексация (офлайн, один раз)
         </div>
-        <div className="mb-3 flex items-stretch gap-1.5">
+        <div className="mb-3 flex items-stretch gap-1.5 overflow-x-auto pb-1">
           {indexStages.map((s, i) => (
             <div key={s.title} className="flex min-w-0 flex-1 items-center gap-1.5">
               <StageCard s={s} i={i} />
@@ -201,7 +201,7 @@ export function RAGPipelineFlow() {
         <div className="mb-1.5 text-[11px] font-semibold uppercase tracking-wider text-accent">
           Фаза 2 · Запрос (онлайн, каждый раз)
         </div>
-        <div className="mb-5 flex items-stretch gap-1.5">
+        <div className="mb-5 flex items-stretch gap-1.5 overflow-x-auto pb-1">
           {queryStages.map((s, i) => (
             <div key={s.title} className="flex min-w-0 flex-1 items-center gap-1.5">
               <StageCard s={s} i={indexStages.length + i} />

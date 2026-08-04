@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react'
 import { motion } from 'framer-motion'
 import { Lightbulb, AlertTriangle, Info, Flame, Sparkles, Target, BookOpen, Check, X, Star } from 'lucide-react'
+import { useReducedMotion } from '../lib/motion'
 
 /** Инлайновые иконки-маркеры для списков и таблиц — замена эмодзи ✅ ❌ ⭐ ⚠️ */
 export function Yes() {
@@ -21,12 +22,14 @@ export function Warn() {
 
 /** Секция урока с заголовком — основная единица структуры */
 export function Section({ title, children }: { title: string; children: ReactNode }) {
+  const reducedMotion = useReducedMotion()
+
   return (
     <motion.section
-      initial={{ opacity: 0, y: 24 }}
-      whileInView={{ opacity: 1, y: 0 }}
+      initial={reducedMotion ? { opacity: 1 } : { opacity: 0, y: 24 }}
+      whileInView={reducedMotion ? { opacity: 1 } : { opacity: 1, y: 0 }}
       viewport={{ once: true, margin: '-60px' }}
-      transition={{ duration: 0.45, ease: 'easeOut' }}
+      transition={{ duration: reducedMotion ? 0 : 0.45, ease: 'easeOut' }}
       className="mb-12"
     >
       <h2 className="mb-4 text-2xl font-bold tracking-tight text-title">

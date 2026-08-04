@@ -79,7 +79,7 @@ export function MCPToolCallFlow() {
           <Wrench className="size-4 text-accent" /> Жизненный цикл tool call
         </span>
         <div className="flex gap-1.5">
-          <button onClick={() => setPlaying((p) => !p)} className="rounded-lg border border-line bg-surface p-1.5 text-accent">
+          <button onClick={() => setPlaying((p) => !p)} className="flex min-h-11 min-w-11 items-center justify-center rounded-lg border border-line bg-surface text-accent">
             {playing ? <Pause className="size-4" /> : <Play className="size-4" />}
           </button>
           <button
@@ -87,7 +87,7 @@ export function MCPToolCallFlow() {
               setStep((s) => Math.min(s + 1, STAGES.length - 1))
               setPlaying(false)
             }}
-            className="rounded-lg border border-line bg-surface p-1.5"
+            className="flex min-h-11 min-w-11 items-center justify-center rounded-lg border border-line bg-surface"
           >
             <StepForward className="size-4" />
           </button>
@@ -96,7 +96,7 @@ export function MCPToolCallFlow() {
               setStep(0)
               setPlaying(false)
             }}
-            className="rounded-lg border border-line bg-surface p-1.5 text-muted"
+            className="flex min-h-11 min-w-11 items-center justify-center rounded-lg border border-line bg-surface text-muted"
           >
             <RotateCcw className="size-4" />
           </button>

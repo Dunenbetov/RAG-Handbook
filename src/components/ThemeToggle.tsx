@@ -11,7 +11,7 @@ export function ThemeToggle({ className = '' }: { className?: string }) {
       onClick={toggleTheme}
       aria-label={dark ? 'Включить светлую тему' : 'Включить тёмную тему'}
       title={dark ? 'Светлая тема' : 'Тёмная тема'}
-      className={`relative flex size-9 items-center justify-center overflow-hidden rounded-xl border border-line bg-surface-2 text-muted transition-colors hover:border-violet/60 hover:text-ink ${className}`}
+      className={`relative flex size-11 items-center justify-center overflow-hidden rounded-xl border border-line bg-surface-2 text-muted transition-colors hover:border-violet/60 hover:text-ink ${className}`}
     >
       <AnimatePresence mode="wait" initial={false}>
         <motion.span

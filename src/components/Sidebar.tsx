@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Link, NavLink, useLocation } from 'react-router-dom'
 import { AnimatePresence, motion } from 'framer-motion'
 import { BookMarked, BrainCircuit, Check, ChevronDown, Lock, Menu, X } from 'lucide-react'
@@ -6,7 +6,15 @@ import { chapters, getChapterLockHint, isChapterLocked, lessonKey } from '../lib
 import { useProgress } from '../lib/progress'
 import { ThemeToggle } from './ThemeToggle'
 
-function ChapterGroup({ chapterId, forceOpen }: { chapterId: string; forceOpen: boolean }) {
+function ChapterGroup({
+  chapterId,
+  forceOpen,
+  onNavigate,
+}: {
+  chapterId: string
+  forceOpen: boolean
+  onNavigate?: () => void
+}) {
   const chapter = chapters.find((c) => c.id === chapterId)!
   const progress = useProgress()
   const locked = isChapterLocked(chapterId, progress.done)
@@ -53,6 +61,7 @@ function ChapterGroup({ chapterId, forceOpen }: { chapterId: string; forceOpen: 
                   <NavLink
                     key={l.id}
                     to={`/${chapter.id}/${l.id}`}
+                    onClick={onNavigate}
                     className={({ isActive }) =>
                       `mb-0.5 flex items-center gap-2 rounded-lg px-2.5 py-1.5 text-[13px] transition-colors ${
                         isActive ? 'bg-violet/15 font-medium text-title' : 'text-muted hover:bg-surface-2 hover:text-ink'
@@ -78,7 +87,7 @@ function ChapterGroup({ chapterId, forceOpen }: { chapterId: string; forceOpen: 
   )
 }
 
-function SidebarContent() {
+function SidebarContent({ onNavigate }: { onNavigate?: () => void }) {
   const location = useLocation()
   const progress = useProgress()
   const activeChapter = location.pathname.split('/')[1]
@@ -86,7 +95,7 @@ function SidebarContent() {
   return (
     <div className="flex h-full flex-col">
       <div className="mb-5 flex items-center gap-2.5 px-3">
-        <Link to="/" className="flex min-w-0 flex-1 items-center gap-2.5">
+        <Link to="/" onClick={onNavigate} className="flex min-w-0 flex-1 items-center gap-2.5">
           <div className="flex size-9 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-accent to-violet">
             <BrainCircuit className="size-5 text-white" />
           </div>
@@ -114,10 +123,16 @@ function SidebarContent() {
 
       <nav className="flex-1 overflow-y-auto px-2 pb-4">
         {chapters.map((c) => (
-          <ChapterGroup key={c.id} chapterId={c.id} forceOpen={c.id === activeChapter || (!activeChapter && c.id === 'ch0')} />
+          <ChapterGroup
+            key={c.id}
+            chapterId={c.id}
+            forceOpen={c.id === activeChapter || (!activeChapter && c.id === 'ch0')}
+            onNavigate={onNavigate}
+          />
         ))}
         <NavLink
           to="/glossary"
+          onClick={onNavigate}
           className={({ isActive }) =>
             `mt-2 flex items-center gap-2 rounded-lg px-3 py-2 text-[13.5px] font-semibold transition-colors ${
               isActive ? 'bg-violet/15 text-title' : 'text-ink hover:bg-surface-2'
@@ -134,12 +149,26 @@ function SidebarContent() {
 
 export function Sidebar() {
   const [mobileOpen, setMobileOpen] = useState(false)
-  const location = useLocation()
+  const closeMobile = () => setMobileOpen(false)
+
+  useEffect(() => {
+    if (!mobileOpen) return
+    const prev = document.body.style.overflow
+    document.body.style.overflow = 'hidden'
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') closeMobile()
+    }
+    window.addEventListener('keydown', onKey)
+    return () => {
+      document.body.style.overflow = prev
+      window.removeEventListener('keydown', onKey)
+    }
+  }, [mobileOpen])
 
   return (
     <>
       {/* мобильная шапка */}
-      <div className="sticky top-0 z-30 flex items-center justify-between border-b border-line bg-bg/90 px-4 py-3 backdrop-blur lg:hidden">
+      <div className="sticky top-0 z-30 flex items-center justify-between border-b border-line bg-bg/90 px-4 py-3 pt-[max(0.75rem,env(safe-area-inset-top))] backdrop-blur lg:hidden">
         <Link to="/" className="flex items-center gap-2 font-bold text-title">
           <span className="flex size-7 items-center justify-center rounded-lg bg-gradient-to-br from-accent to-violet">
             <BrainCircuit className="size-4 text-white" />
@@ -148,7 +177,12 @@ export function Sidebar() {
         </Link>
         <div className="flex items-center gap-2">
           <ThemeToggle />
-          <button onClick={() => setMobileOpen(true)} className="rounded-lg border border-line p-2 text-ink">
+          <button
+            onClick={() => setMobileOpen(true)}
+            aria-label="Открыть меню"
+            aria-expanded={mobileOpen}
+            className="flex size-11 items-center justify-center rounded-lg border border-line text-ink"
+          >
             <Menu className="size-5" />
           </button>
         </div>
@@ -167,26 +201,24 @@ export function Sidebar() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              onClick={() => setMobileOpen(false)}
+              onClick={closeMobile}
               className="fixed inset-0 z-40 bg-black/60 lg:hidden"
             />
             <motion.aside
-              key={location.pathname}
               initial={{ x: -320 }}
               animate={{ x: 0 }}
               exit={{ x: -320 }}
               transition={{ type: 'tween', duration: 0.22 }}
-              className="fixed inset-y-0 left-0 z-50 w-72 border-r border-line bg-surface py-5 lg:hidden"
+              className="fixed inset-y-0 left-0 z-50 w-72 border-r border-line bg-surface py-5 pb-[env(safe-area-inset-bottom)] lg:hidden"
             >
               <button
-                onClick={() => setMobileOpen(false)}
-                className="absolute right-3 top-3 rounded-lg p-1.5 text-muted hover:text-ink"
+                onClick={closeMobile}
+                aria-label="Закрыть меню"
+                className="absolute right-3 top-3 flex size-11 items-center justify-center rounded-lg text-muted hover:text-ink"
               >
                 <X className="size-5" />
               </button>
-              <div onClick={() => setMobileOpen(false)} className="h-full">
-                <SidebarContent />
-              </div>
+              <SidebarContent onNavigate={closeMobile} />
             </motion.aside>
           </>
         )}

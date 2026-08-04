@@ -37,6 +37,12 @@ const DETAILS: Record<NodeId, string> = {
   server3: 'Remote server по Streamable HTTP: масштабируется, может обслуживать несколько clients. Требует MCP-Protocol-Version header.',
 }
 
+const MOBILE_GROUPS: { title: string; ids: NodeId[] }[] = [
+  { title: 'Host', ids: ['host'] },
+  { title: 'Clients (1:1)', ids: ['client1', 'client2', 'client3'] },
+  { title: 'Servers', ids: ['server1', 'server2', 'server3'] },
+]
+
 function neighborsOf(node: NodeId): Set<NodeId> {
   const set = new Set<NodeId>([node])
   for (const [a, b] of EDGES) {
@@ -44,6 +50,26 @@ function neighborsOf(node: NodeId): Set<NodeId> {
     if (b === node) set.add(a)
   }
   return set
+}
+
+function NodeDetail({ active }: { active: NodeId }) {
+  return (
+    <AnimatePresence mode="wait">
+      <motion.div
+        key={active}
+        initial={{ opacity: 0, y: 8 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0, y: -8 }}
+        className="rounded-xl border border-line bg-surface-2/60 p-4"
+      >
+        <div className="mb-1 flex items-center gap-2 font-semibold text-title">
+          <Bot className="size-4 text-accent" />
+          {NODES[active].label}
+        </div>
+        <p className="text-[14px] leading-relaxed text-ink/85">{DETAILS[active]}</p>
+      </motion.div>
+    </AnimatePresence>
+  )
 }
 
 export function MCPTopologyMap() {
@@ -56,7 +82,45 @@ export function MCPTopologyMap() {
         Топология MCP: Host → Client → Server (1:1)
       </div>
       <div className="p-5">
-        <div className="relative mb-4 aspect-[16/10] rounded-xl border border-line bg-surface-2/30">
+        {/* компактный список на узких экранах */}
+        <div className="mb-4 space-y-4 sm:hidden">
+          {MOBILE_GROUPS.map((group) => (
+            <div key={group.title}>
+              <div className="mb-2 text-[11px] font-semibold uppercase tracking-wider text-muted">{group.title}</div>
+              <div className="space-y-2">
+                {(group.ids as NodeId[]).map((id) => {
+                  const n = NODES[id]
+                  const Icon = n.icon
+                  const isActive = active === id
+                  const onPath = pathSet.has(id)
+                  return (
+                    <button
+                      key={id}
+                      type="button"
+                      onClick={() => setActive(id)}
+                      className={`flex w-full items-center gap-3 rounded-xl border px-3 py-2.5 text-left transition-all ${
+                        isActive
+                          ? 'border-accent bg-accent/15'
+                          : onPath
+                            ? 'border-accent/50 bg-accent/5'
+                            : 'border-line bg-surface'
+                      }`}
+                    >
+                      <Icon className={`size-4 shrink-0 ${isActive || onPath ? 'text-accent' : 'text-muted'}`} />
+                      <div className="min-w-0">
+                        <div className="text-sm font-semibold text-title">{n.label}</div>
+                        <div className="text-xs text-muted">{n.sub}</div>
+                      </div>
+                    </button>
+                  )
+                })}
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* карта на sm+ */}
+        <div className="relative mb-4 hidden aspect-[16/10] rounded-xl border border-line bg-surface-2/30 sm:block">
           <svg
             className="pointer-events-none absolute inset-0 size-full"
             viewBox="0 0 100 100"
@@ -92,7 +156,7 @@ export function MCPTopologyMap() {
                 type="button"
                 onClick={() => setActive(id)}
                 style={{ left: `${n.x}%`, top: `${n.y}%` }}
-                className={`absolute z-10 min-w-[88px] -translate-x-1/2 -translate-y-1/2 rounded-xl border px-2 py-1.5 text-center transition-all ${
+                className={`absolute z-10 min-w-[72px] -translate-x-1/2 -translate-y-1/2 rounded-xl border px-1.5 py-1 text-center transition-all ${
                   isActive
                     ? 'border-accent bg-accent/15 shadow-lg shadow-accent/20'
                     : onPath
@@ -108,21 +172,7 @@ export function MCPTopologyMap() {
           })}
         </div>
 
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={active}
-            initial={{ opacity: 0, y: 8 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -8 }}
-            className="rounded-xl border border-line bg-surface-2/60 p-4"
-          >
-            <div className="mb-1 flex items-center gap-2 font-semibold text-title">
-              <Bot className="size-4 text-accent" />
-              {NODES[active].label}
-            </div>
-            <p className="text-[14px] leading-relaxed text-ink/85">{DETAILS[active]}</p>
-          </motion.div>
-        </AnimatePresence>
+        <NodeDetail active={active} />
       </div>
     </div>
   )

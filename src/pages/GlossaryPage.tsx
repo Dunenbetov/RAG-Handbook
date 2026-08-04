@@ -43,7 +43,7 @@ export function GlossaryPage() {
         </p>
       </motion.div>
 
-      <div className="sticky top-0 z-10 -mx-2 mb-6 bg-bg/90 px-2 py-3 backdrop-blur lg:top-0">
+      <div className="sticky top-14 z-10 -mx-2 mb-6 bg-bg/90 px-2 py-3 backdrop-blur lg:top-0">
         <div className="relative mb-3">
           <Search className="absolute left-3.5 top-1/2 size-4 -translate-y-1/2 text-muted" />
           <input
