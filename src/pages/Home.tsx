@@ -2,7 +2,7 @@ import { lazy, Suspense } from 'react'
 import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { ArrowRight, BookMarked, Gamepad2, GraduationCap, ListChecks, Lock } from 'lucide-react'
-import { chapters, isChapterLocked, lessonKey } from '../lib/curriculum'
+import { chapters, getChapterLockHint, isChapterLocked, lessonKey } from '../lib/curriculum'
 import { useProgress } from '../lib/progress'
 
 // three.js тяжёлый — грузим фон отдельным чанком, страница работает и без него
@@ -18,10 +18,10 @@ function formatMinutes(total: number) {
 }
 
 const features = [
-  { icon: <Gamepad2 className="size-5 text-accent" />, title: '10 интерактивных симуляторов', text: 'Chunking, эмбеддинги, hybrid search, RAGAS и граф знаний — всё можно потрогать руками.' },
-  { icon: <GraduationCap className="size-5 text-violet" />, title: 'От нуля до практики', text: 'Никаких предварительных знаний: начинаем с «что такое LLM», заканчиваем гидом по своему проекту.' },
-  { icon: <ListChecks className="size-5 text-good" />, title: 'Квизы и чек-листы', text: 'После каждой главы — проверка себя. Перед стартом проекта — итоговый чек-лист.' },
-  { icon: <BookMarked className="size-5 text-warn" />, title: 'Глоссарий на 55+ терминов', text: 'Каждый термин в тексте кликабелен — определение всегда под рукой.' },
+  { icon: <Gamepad2 className="size-5 text-accent" />, title: '17 интерактивных симуляторов', text: 'RAG, MCP topology, tool call flow, ASR→TTS, video routing, чек-листы проектов — всё можно потрогать руками.' },
+  { icon: <GraduationCap className="size-5 text-violet" />, title: 'От LLM до мультимодальных агентов', text: 'RAG → MCP → Image/Audio/Video → Gradio-агент с аватаром. Без предварительных знаний.' },
+  { icon: <ListChecks className="size-5 text-good" />, title: 'Квизы и чек-листы', text: 'После каждой главы — проверка себя. Гиды по Project 4 и Project 5 с интерактивными чек-листами.' },
+  { icon: <BookMarked className="size-5 text-warn" />, title: 'Глоссарий на 80+ терминов', text: 'MCP, FastMCP, ASR, T2V, GraphRAG — каждый термин кликабелен прямо в уроках.' },
 ]
 
 export function Home() {
@@ -44,13 +44,13 @@ export function Home() {
       <div className="relative py-16 md:py-24">
         <div className="pointer-events-none absolute -top-32 left-1/2 h-96 w-[42rem] -translate-x-1/2 rounded-full bg-violet/15 blur-3xl" />
         <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} className="relative text-center">
-          <div className="chip mx-auto mb-6 w-fit">Интерактивный учебник · RAG</div>
+          <div className="chip mx-auto mb-6 w-fit">Интерактивный учебник · LLM-Engineer</div>
           <h1 className="mx-auto mb-5 max-w-3xl text-4xl font-extrabold leading-tight tracking-tight text-title md:text-6xl">
-            Как на самом деле работает <span className="gradient-text">RAG</span>
+            От <span className="gradient-text">RAG</span> до мультимодальных агентов
           </h1>
           <p className="mx-auto mb-8 max-w-2xl text-lg leading-relaxed text-muted">
-            От основ RAG и продвинутых техник до оценивания качества через RAGAS и GraphRAG.
-            Пошагово, с анимациями и симуляторами — а в конце практический гид по своему проекту.
+            RAG, Advanced RAG, GraphRAG, MCP, Image/Audio/Video и Gradio-агенты с аватаром.
+            Пошагово, с анимациями и симуляторами — плюс гиды по Project 4 и Project 5.
           </p>
           <div className="flex flex-wrap items-center justify-center gap-3">
             {nextLesson ? (
@@ -125,7 +125,7 @@ export function Home() {
                   <h3 className={`text-lg font-bold ${locked ? 'text-muted' : 'text-title'}`}>{chapter.title}</h3>
                 </div>
                 {locked ? (
-                  <p className="text-sm text-muted">Откроется, когда пройдёшь остальные главы</p>
+                  <p className="text-sm text-muted">{getChapterLockHint(chapter.id)}</p>
                 ) : (
                   <>
                     <p className="mb-2 text-sm text-muted">{chapter.subtitle}</p>

@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { Link, NavLink, useLocation } from 'react-router-dom'
 import { AnimatePresence, motion } from 'framer-motion'
 import { BookMarked, BrainCircuit, Check, ChevronDown, Lock, Menu, X } from 'lucide-react'
-import { chapters, isChapterLocked, lessonKey } from '../lib/curriculum'
+import { chapters, getChapterLockHint, isChapterLocked, lessonKey } from '../lib/curriculum'
 import { useProgress } from '../lib/progress'
 import { ThemeToggle } from './ThemeToggle'
 
@@ -18,7 +18,7 @@ function ChapterGroup({ chapterId, forceOpen }: { chapterId: string; forceOpen: 
       <button
         onClick={() => !locked && setOpen((v) => !v)}
         disabled={locked}
-        title={locked ? 'Откроется, когда пройдёшь остальные главы' : undefined}
+        title={locked ? getChapterLockHint(chapterId) : undefined}
         className={`flex w-full items-center gap-2 rounded-lg px-3 py-2 text-left text-[13.5px] font-semibold transition-colors ${
           locked ? 'cursor-not-allowed text-muted/60' : 'text-ink hover:bg-surface-2'
         }`}

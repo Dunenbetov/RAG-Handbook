@@ -1,5 +1,5 @@
 import type { LucideIcon } from 'lucide-react'
-import { BarChart3, Blocks, Rocket, Sprout, Trophy } from 'lucide-react'
+import { AudioLines, BarChart3, Blocks, Cable, Rocket, Sprout, Trophy } from 'lucide-react'
 
 export interface LessonMeta {
   id: string
@@ -88,9 +88,9 @@ export const chapters: Chapter[] = [
   {
     id: 'ch4',
     num: 4,
-    title: 'Гид по практическому проекту',
-    subtitle: 'Пошаговый план: как применить RAG в своём проекте, от плана до чек-листа',
-    week: 'Проект',
+    title: 'Гид по Project 4',
+    subtitle: 'Пошаговый план RAG-проекта: от парсинга PDF до чек-листа сдачи',
+    week: 'Проект 4',
     icon: Trophy,
     lessons: [
       { id: 'overview', title: 'С чего начать свой проект', description: 'Постановка задачи, данные и требования к результату', minutes: 10 },
@@ -99,6 +99,60 @@ export const chapters: Chapter[] = [
       { id: 'bonus-graphrag', title: 'Бонус: добавляем GraphRAG', description: 'Neo4j, извлечение сущностей и сравнение с Vector RAG', minutes: 10 },
       { id: 'pitfalls', title: 'Ловушки и советы', description: 'Где чаще всего теряют качество и как этого избежать', minutes: 9 },
       { id: 'checklist', title: 'Итоговый чек-лист', description: 'Интерактивный список: ничего не забыть перед релизом', minutes: 5 },
+    ],
+  },
+  {
+    id: 'ch5',
+    num: 5,
+    title: 'MCP: USB-C для AI',
+    subtitle: 'Model Context Protocol — как LLM подключаются к инструментам, данным и браузеру',
+    week: 'Модуль 4',
+    icon: Cable,
+    lessons: [
+      { id: 'why-mcp', title: 'Зачем нужен MCP', description: 'Мир до MCP, проблема N×M и идея «одного разъёма»', minutes: 10 },
+      { id: 'architecture', title: 'Host, Client, Server', description: 'Архитектура MCP, STDIO и Streamable HTTP', minutes: 11 },
+      { id: 'primitives', title: 'Tools, Resources, Prompts', description: 'Три примитива протокола и когда что использовать', minutes: 10 },
+      { id: 'tool-flow', title: 'Жизненный цикл tool call', description: 'JSON-RPC: от запроса LLM до ответа сервера', minutes: 11 },
+      { id: 'using-servers', title: 'Готовые MCP-серверы', description: 'Context7, Chrome DevTools, Playwright — подключение и use-cases', minutes: 12 },
+      { id: 'fastmcp', title: 'Свой сервер на FastMCP', description: 'Пишем tools, resources и prompts на Python', minutes: 12 },
+      { id: 'skills-ace', title: 'Skills и Context Engineering', description: 'MCP + Skills + ACE: как агент учится работать лучше', minutes: 10 },
+      { id: 'seminar', title: 'Семинар: planner-агент', description: 'Weather + Playwright + notes → единый агент', minutes: 14 },
+      { id: 'quiz', title: 'Квиз: MCP', description: 'Проверяем понимание протокола', minutes: 6 },
+    ],
+  },
+  {
+    id: 'ch6',
+    num: 6,
+    title: 'Мультимодальные агенты',
+    subtitle: 'Image, Audio, Video и склейка модальностей в Gradio-агента',
+    week: 'Модуль 5',
+    icon: AudioLines,
+    lessons: [
+      { id: 'modalities-map', title: 'Карта модальностей', description: 'Input → Brain → Output: как устроен мультимодальный агент', minutes: 9 },
+      { id: 'image-models', title: 'Image-модели', description: '4 класса задач: VLM, генерация, редактирование, LoRA', minutes: 12 },
+      { id: 'audio-models', title: 'Audio-модели', description: 'ASR, diarization, TTS и voice clone', minutes: 13 },
+      { id: 'video-models', title: 'Video-модели', description: 'T2V, I2V, keyframes и fal.ai / Replicate', minutes: 11 },
+      { id: 'gradio-agents', title: 'Gradio-агенты', description: 'Склеиваем ASR → LLM → TTS → Avatar в UI', minutes: 12 },
+      { id: 'cost-routing', title: 'Стоимость и routing', description: 'detail:low, кэш, model routing — не сжечь бюджет', minutes: 10 },
+      { id: 'seminar', title: 'Семинар: voice-to-avatar', description: 'От голосового ввода до видео с аватаром', minutes: 12 },
+      { id: 'quiz', title: 'Квиз: мультимодальность', description: 'Проверяем модальности и пайплайны', minutes: 6 },
+    ],
+  },
+  {
+    id: 'ch7',
+    num: 7,
+    title: 'Гид по Project 5',
+    subtitle: 'AI Avatar Agent: рестораны Алматы, MCP, vision, voice clone и говорящий аватар',
+    week: 'Проект 5',
+    icon: Trophy,
+    lessons: [
+      { id: 'overview', title: 'ТЗ и баллы', description: 'Что сдаём, за что начисляют 100+10 баллов', minutes: 10 },
+      { id: 'mcp-plan', title: 'MCP-серверы 2GIS и Chocolife', description: 'Парсинг через Playwright MCP, stdio/SSE', minutes: 12 },
+      { id: 'agent-brain', title: 'LLM + tools + memory + vision', description: 'Мозг агента: tool calling и сессионная память', minutes: 11 },
+      { id: 'voice-avatar', title: 'Voice clone и Avatar video', description: 'MiniMax TTS + Creatify Aurora / Kling Avatar', minutes: 12 },
+      { id: 'critic-skill', title: 'Skill «Ресторанный критик»', description: 'Custom tool analyze_restaurant_photo', minutes: 9 },
+      { id: 'pitfalls', title: 'Отладка и бюджет', description: 'Порядок отладки, моки, ~$15–20 на проект', minutes: 10 },
+      { id: 'checklist', title: 'Чек-лист сдачи', description: 'Интерактивный список по рубрике Project 5', minutes: 5 },
     ],
   },
 ]
@@ -117,12 +171,28 @@ export function lessonKey(chapterId: string, lessonId: string) {
   return `${chapterId}/${lessonId}`
 }
 
-/** Глава-«гид по проекту» открывается только после прохождения всех остальных глав */
+const PROJECT_GUIDE_CHAPTERS: Record<string, string[]> = {
+  ch4: ['ch0', 'ch1', 'ch2', 'ch3'],
+  ch7: ['ch5', 'ch6'],
+}
+
+function chapterLessonsComplete(chapterId: string, done: Set<string>) {
+  const chapter = getChapter(chapterId)
+  if (!chapter) return true
+  return chapter.lessons.every((l) => done.has(lessonKey(chapterId, l.id)))
+}
+
+/** Гиды по проектам открываются после прохождения указанных глав */
 export function isChapterLocked(chapterId: string, done: Set<string>) {
-  if (chapterId !== 'ch4') return false
-  return chapters
-    .filter((c) => c.id !== 'ch4')
-    .some((c) => c.lessons.some((l) => !done.has(lessonKey(c.id, l.id))))
+  const required = PROJECT_GUIDE_CHAPTERS[chapterId]
+  if (!required) return false
+  return required.some((id) => !chapterLessonsComplete(id, done))
+}
+
+export function getChapterLockHint(chapterId: string): string {
+  if (chapterId === 'ch4') return 'Откроется после глав 0–3 (RAG и оценивание)'
+  if (chapterId === 'ch7') return 'Откроется после глав 5–6 (MCP и мультимодальность)'
+  return 'Откроется после прохождения предыдущих глав'
 }
 
 /** Плоский список всех уроков в порядке прохождения */
