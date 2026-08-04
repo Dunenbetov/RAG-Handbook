@@ -91,8 +91,8 @@ function SidebarContent() {
             <BrainCircuit className="size-5 text-white" />
           </div>
           <div className="min-w-0">
-            <div className="text-[15px] font-bold leading-tight text-title">RAG Handbook</div>
-            <div className="text-[11px] text-muted">интерактивный учебник</div>
+            <div className="text-[15px] font-bold leading-tight text-title">LLM Handbook</div>
+            <div className="text-[11px] text-muted">практика LLM-инженерии</div>
           </div>
         </Link>
         <ThemeToggle className="shrink-0" />
@@ -144,7 +144,7 @@ export function Sidebar() {
           <span className="flex size-7 items-center justify-center rounded-lg bg-gradient-to-br from-accent to-violet">
             <BrainCircuit className="size-4 text-white" />
           </span>
-          RAG Handbook
+          LLM Handbook
         </Link>
         <div className="flex items-center gap-2">
           <ThemeToggle />

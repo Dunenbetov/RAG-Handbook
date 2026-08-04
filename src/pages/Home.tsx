@@ -19,7 +19,7 @@ function formatMinutes(total: number) {
 
 const features = [
   { icon: <Gamepad2 className="size-5 text-accent" />, title: '17 интерактивных симуляторов', text: 'RAG, MCP topology, tool call flow, ASR→TTS, video routing, чек-листы проектов — всё можно потрогать руками.' },
-  { icon: <GraduationCap className="size-5 text-violet" />, title: 'От LLM до мультимодальных агентов', text: 'RAG → MCP → Image/Audio/Video → Gradio-агент с аватаром. Без предварительных знаний.' },
+  { icon: <GraduationCap className="size-5 text-violet" />, title: 'С нуля — без лекций', text: 'От базовых LLM до агентов, инструментов и модальностей. Без предварительных знаний.' },
   { icon: <ListChecks className="size-5 text-good" />, title: 'Квизы и чек-листы', text: 'После каждой главы — проверка себя. Гиды по Project 4 и Project 5 с интерактивными чек-листами.' },
   { icon: <BookMarked className="size-5 text-warn" />, title: 'Глоссарий на 80+ терминов', text: 'MCP, FastMCP, ASR, T2V, GraphRAG — каждый термин кликабелен прямо в уроках.' },
 ]
@@ -46,11 +46,11 @@ export function Home() {
         <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} className="relative text-center">
           <div className="chip mx-auto mb-6 w-fit">Интерактивный учебник · LLM-Engineer</div>
           <h1 className="mx-auto mb-5 max-w-3xl text-4xl font-extrabold leading-tight tracking-tight text-title md:text-6xl">
-            От <span className="gradient-text">RAG</span> до мультимодальных агентов
+            Практика <span className="gradient-text">LLM</span>-инженерии
           </h1>
           <p className="mx-auto mb-8 max-w-2xl text-lg leading-relaxed text-muted">
-            RAG, Advanced RAG, GraphRAG, MCP, Image/Audio/Video и Gradio-агенты с аватаром.
-            Пошагово, с анимациями и симуляторами — плюс гиды по Project 4 и Project 5.
+            Интерактивный конспект: уроки, симуляторы и гиды по проектам —
+            чтобы собирать LLM-системы, а не только читать про них.
           </p>
           <div className="flex flex-wrap items-center justify-center gap-3">
             {nextLesson ? (
