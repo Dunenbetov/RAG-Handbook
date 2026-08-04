@@ -13,6 +13,22 @@ npm run dev        # → http://localhost:5173
 
 Продакшн-сборка: `npm run build` (результат в `dist/`, чистая статика — откроется с любого хостинга).
 
+## Деплой на Railway
+
+Проект готов к деплою через Dockerfile (Node build → Caddy serve). Переменные окружения не нужны.
+
+1. Закоммитьте и запушьте изменения в GitHub (`Dunenbetov/RAG-Handbook`).
+2. В [Railway](https://railway.com): **New Project** → **Deploy from GitHub repo** → выберите репозиторий.
+3. После успешного деплоя: **Settings** → **Networking** → **Generate Domain**.
+
+Альтернатива через CLI:
+
+```bash
+railway login
+railway init
+railway up
+```
+
 ## Что внутри
 
 - **8 глав, 56 уроков**: Старт с нуля → RAG (нед. 11) → Advanced RAG (нед. 12) → Оценивание и GraphRAG (нед. 13) → Project 4 → MCP (нед. 14–15) → Мультимодальность (нед. 16–19) → Project 5
