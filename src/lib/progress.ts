@@ -1,5 +1,6 @@
 import { useSyncExternalStore } from 'react'
 import { allLessons } from './curriculum'
+import { recordLearningActivity } from './account'
 
 const STORAGE_KEY = 'rag-conspect-progress-v1'
 
@@ -32,6 +33,7 @@ export function markDone(key: string) {
   const next = new Set(load())
   next.add(key)
   save(next)
+  recordLearningActivity()
 }
 
 export function markUndone(key: string) {

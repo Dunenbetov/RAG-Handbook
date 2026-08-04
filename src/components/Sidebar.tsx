@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react'
 import { Link, NavLink, useLocation } from 'react-router-dom'
 import { AnimatePresence, motion } from 'framer-motion'
-import { BookMarked, BrainCircuit, Check, ChevronDown, Lock, Menu, X } from 'lucide-react'
+import { BookMarked, BrainCircuit, Check, ChevronDown, Flame, Lock, Menu, UserRound, X } from 'lucide-react'
 import { chapters, getChapterLockHint, isChapterLocked, lessonKey } from '../lib/curriculum'
 import { useProgress } from '../lib/progress'
 import { ThemeToggle } from './ThemeToggle'
+import { useAccount } from '../lib/account'
 
 function ChapterGroup({
   chapterId,
@@ -87,9 +88,10 @@ function ChapterGroup({
   )
 }
 
-function SidebarContent({ onNavigate }: { onNavigate?: () => void }) {
+function SidebarContent({ onNavigate, onOpenAccount }: { onNavigate?: () => void; onOpenAccount: () => void }) {
   const location = useLocation()
   const progress = useProgress()
+  const { account, streak } = useAccount()
   const activeChapter = location.pathname.split('/')[1]
 
   return (
@@ -121,6 +123,14 @@ function SidebarContent({ onNavigate }: { onNavigate?: () => void }) {
         </div>
       </div>
 
+      <div className="mb-3 px-3">
+        <button onClick={onOpenAccount} className="flex w-full items-center gap-2.5 rounded-xl border border-line bg-surface-2/70 px-3 py-2.5 text-left transition-colors hover:border-violet/60">
+          <span className="flex size-8 shrink-0 items-center justify-center rounded-lg bg-violet/15 text-violet"><UserRound className="size-4" /></span>
+          <span className="min-w-0 flex-1"><span className="block truncate text-xs font-semibold text-ink">{account?.name ?? 'Войти в профиль'}</span><span className="block text-[11px] text-muted">{account ? account.email : 'синхронизация появится позже'}</span></span>
+          {streak > 0 && <span className="inline-flex items-center gap-0.5 text-xs font-semibold text-warn"><Flame className="size-3.5" />{streak}</span>}
+        </button>
+      </div>
+
       <nav className="flex-1 overflow-y-auto px-2 pb-4">
         {chapters.map((c) => (
           <ChapterGroup
@@ -142,12 +152,20 @@ function SidebarContent({ onNavigate }: { onNavigate?: () => void }) {
           <BookMarked className="size-4 text-accent" />
           Глоссарий
         </NavLink>
+        <NavLink
+          to="/profile"
+          onClick={onNavigate}
+          className={({ isActive }) => `mt-1 flex items-center gap-2 rounded-lg px-3 py-2 text-[13.5px] font-semibold transition-colors ${isActive ? 'bg-violet/15 text-title' : 'text-ink hover:bg-surface-2'}`}
+        >
+          <UserRound className="size-4 text-violet" />
+          Мой прогресс
+        </NavLink>
       </nav>
     </div>
   )
 }
 
-export function Sidebar() {
+export function Sidebar({ onOpenAccount }: { onOpenAccount: () => void }) {
   const [mobileOpen, setMobileOpen] = useState(false)
   const closeMobile = () => setMobileOpen(false)
 
@@ -190,7 +208,7 @@ export function Sidebar() {
 
       {/* десктопный сайдбар */}
       <aside className="fixed inset-y-0 left-0 z-20 hidden w-72 border-r border-line bg-surface/60 py-5 backdrop-blur lg:block">
-        <SidebarContent />
+        <SidebarContent onOpenAccount={onOpenAccount} />
       </aside>
 
       {/* мобильный drawer */}
@@ -218,7 +236,7 @@ export function Sidebar() {
               >
                 <X className="size-5" />
               </button>
-              <SidebarContent onNavigate={closeMobile} />
+              <SidebarContent onNavigate={closeMobile} onOpenAccount={onOpenAccount} />
             </motion.aside>
           </>
         )}
