@@ -30,7 +30,7 @@ export default function Lesson() {
             },
             {
               title: '4. Host → MCP Client',
-              body: 'Host находит client, которому принадлежит tool get_weather (маппинг построен при initialize). Формирует JSON-RPC request tools/call и отправляет client\'у.',
+              body: 'Host находит client, которому принадлежит tool get_weather (маппинг построен по ответам tools/list на шаге 2). Формирует JSON-RPC request tools/call и отправляет client\'у.',
             },
             {
               title: '5. Client → MCP Server',
@@ -75,8 +75,9 @@ export default function Lesson() {
         />
         <p>
           Модель <strong>никогда не вызывает HTTP напрямую</strong>. Она только генерирует JSON «хочу вызвать get_weather».
-          Host и MCP Client — доверенная прослойка, которая реально выполняет код. Это важно для безопасности: server
-          работает в sandbox, host может спросить пользователя «разрешить вызов?».
+          Host и MCP Client — доверенная прослойка, которая реально выполняет код. Это важно для безопасности: host может
+          спросить пользователя «разрешить вызов?». Но sandbox протокол не даёт: локальный STDIO-server — обычный процесс
+          с правами пользователя, изоляцию (контейнер, ограниченный токен) настраиваешь сам.
         </p>
       </Section>
 

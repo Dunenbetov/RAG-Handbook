@@ -1,8 +1,8 @@
 import { lazy, Suspense } from 'react'
 import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import { ArrowRight, BookMarked, Gamepad2, GraduationCap, ListChecks, Lock } from 'lucide-react'
-import { chapters, getChapterLockHint, isChapterLocked, lessonKey } from '../lib/curriculum'
+import { ArrowRight, BookMarked, Gamepad2, GraduationCap, ListChecks } from 'lucide-react'
+import { chapters, lessonKey } from '../lib/curriculum'
 import { useProgress } from '../lib/progress'
 
 // three.js тяжёлый — грузим фон отдельным чанком, страница работает и без него
@@ -18,10 +18,10 @@ function formatMinutes(total: number) {
 }
 
 const features = [
-  { icon: <Gamepad2 className="size-5 text-accent" />, title: '17 интерактивных симуляторов', text: 'RAG, MCP topology, tool call flow, ASR→TTS, video routing, чек-листы проектов — всё можно потрогать руками.' },
-  { icon: <GraduationCap className="size-5 text-violet" />, title: 'С нуля — без лекций', text: 'От базовых LLM до агентов, инструментов и модальностей. Без предварительных знаний.' },
-  { icon: <ListChecks className="size-5 text-good" />, title: 'Квизы и чек-листы', text: 'После каждой главы — проверка себя. Гиды по Project 4 и Project 5 с интерактивными чек-листами.' },
-  { icon: <BookMarked className="size-5 text-warn" />, title: 'Глоссарий на 80+ терминов', text: 'MCP, FastMCP, ASR, T2V, GraphRAG — каждый термин кликабелен прямо в уроках.' },
+  { icon: <Gamepad2 className="size-5 text-accent" />, title: '20+ интерактивных симуляторов', text: 'RAG, MCP, tool call flow, прогон графа LangGraph, дерево трейса, A/B-калькулятор, флеш-карты к защите — всё можно потрогать руками.' },
+  { icon: <GraduationCap className="size-5 text-violet" />, title: 'С нуля — без лекций', text: 'От базовых LLM до агентов на LangGraph, evals и мультиагентных систем. Без предварительных знаний.' },
+  { icon: <ListChecks className="size-5 text-good" />, title: 'Квизы и чек-листы', text: 'После каждой главы — проверка себя. Гиды по Project 4 и Project 5, подготовка к защите Final Project.' },
+  { icon: <BookMarked className="size-5 text-warn" />, title: 'Глоссарий на 80+ терминов', text: 'MCP, LangGraph, RAGAS, A2A, GraphRAG — каждый термин кликабелен прямо в уроках.' },
 ]
 
 export function Home() {
@@ -58,8 +58,8 @@ export function Home() {
                 {progress.count > 0 ? 'Продолжить обучение' : 'Начать с нуля'} <ArrowRight className="size-4" />
               </Link>
             ) : (
-              <Link to="/ch4/checklist" className="btn-primary text-base">
-                Курс пройден — к чек-листу! <ArrowRight className="size-4" />
+              <Link to="/ch11/rubric" className="btn-primary text-base">
+                Курс пройден — к защите! <ArrowRight className="size-4" />
               </Link>
             )}
             <Link to="/glossary" className="btn-ghost text-base">
@@ -108,44 +108,31 @@ export function Home() {
         {chapters.map((chapter, i) => {
           const doneCount = chapter.lessons.filter((l) => progress.isDone(lessonKey(chapter.id, l.id))).length
           const pct = Math.round((doneCount / chapter.lessons.length) * 100)
-          const locked = isChapterLocked(chapter.id, progress.done)
 
           const inner = (
             <>
-              <div
-                className={`flex size-14 shrink-0 items-center justify-center rounded-2xl ${
-                  locked ? 'bg-surface-2' : 'bg-gradient-to-br from-accent/15 to-violet/15'
-                }`}
-              >
-                {locked ? <Lock className="size-6 text-muted" /> : <chapter.icon className="size-7 text-accent" />}
+              <div className="flex size-14 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-accent/15 to-violet/15">
+                <chapter.icon className="size-7 text-accent" />
               </div>
               <div className="min-w-0 flex-1">
                 <div className="mb-1 flex flex-wrap items-center gap-2">
                   <span className="chip">{chapter.week}</span>
-                  <h3 className={`text-lg font-bold ${locked ? 'text-muted' : 'text-title'}`}>{chapter.title}</h3>
+                  <h3 className="text-lg font-bold text-title">{chapter.title}</h3>
                 </div>
-                {locked ? (
-                  <p className="text-sm text-muted">{getChapterLockHint(chapter.id)}</p>
-                ) : (
-                  <>
-                    <p className="mb-2 text-sm text-muted">{chapter.subtitle}</p>
-                    <div className="flex items-center gap-3">
-                      <div className="h-1.5 w-40 overflow-hidden rounded-full bg-surface-2">
-                        <div
-                          className={`h-full rounded-full ${pct === 100 ? 'bg-good' : 'bg-gradient-to-r from-accent to-violet'}`}
-                          style={{ width: `${pct}%` }}
-                        />
-                      </div>
-                      <span className="text-xs text-muted">
-                        {doneCount}/{chapter.lessons.length} уроков · {formatMinutes(chapter.lessons.reduce((s, l) => s + l.minutes, 0))}
-                      </span>
-                    </div>
-                  </>
-                )}
+                <p className="mb-2 text-sm text-muted">{chapter.subtitle}</p>
+                <div className="flex items-center gap-3">
+                  <div className="h-1.5 w-40 overflow-hidden rounded-full bg-surface-2">
+                    <div
+                      className={`h-full rounded-full ${pct === 100 ? 'bg-good' : 'bg-gradient-to-r from-accent to-violet'}`}
+                      style={{ width: `${pct}%` }}
+                    />
+                  </div>
+                  <span className="text-xs text-muted">
+                    {doneCount}/{chapter.lessons.length} уроков · {formatMinutes(chapter.lessons.reduce((s, l) => s + l.minutes, 0))}
+                  </span>
+                </div>
               </div>
-              {!locked && (
-                <ArrowRight className="hidden size-5 shrink-0 text-muted transition-all group-hover:translate-x-1 group-hover:text-accent md:block" />
-              )}
+              <ArrowRight className="hidden size-5 shrink-0 text-muted transition-all group-hover:translate-x-1 group-hover:text-accent md:block" />
             </>
           )
 
@@ -157,18 +144,12 @@ export function Home() {
               viewport={{ once: true, margin: '-40px' }}
               transition={{ delay: i * 0.05, duration: 0.4 }}
             >
-              {locked ? (
-                <div className="card flex cursor-not-allowed flex-col gap-4 p-6 opacity-60 md:flex-row md:items-center">
-                  {inner}
-                </div>
-              ) : (
-                <Link
-                  to={`/${chapter.id}/${chapter.lessons[0].id}`}
-                  className="card group flex flex-col gap-4 p-6 transition-all hover:border-violet/50 hover:shadow-lg hover:shadow-violet/10 md:flex-row md:items-center"
-                >
-                  {inner}
-                </Link>
-              )}
+              <Link
+                to={`/${chapter.id}/${chapter.lessons[0].id}`}
+                className="card group flex flex-col gap-4 p-6 transition-all hover:border-violet/50 hover:shadow-lg hover:shadow-violet/10 md:flex-row md:items-center"
+              >
+                {inner}
+              </Link>
             </motion.div>
           )
         })}

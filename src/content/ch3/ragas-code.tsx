@@ -89,6 +89,35 @@ metrics = [
     LLMContextPrecisionWithReference(llm=evaluator_llm),
 ]`}
         />
+        <Callout type="warn" title="ragas 0.4+: что поменялось в API">
+          <p>
+            Код урока написан на API ragas 0.2–0.3, как на семинаре. В 0.4 он ещё работает, но с предупреждениями:{' '}
+            <code>LangchainLLMWrapper</code> и <code>evaluate()</code> помечены deprecated. Судью теперь создают через{' '}
+            <code>llm_factory()</code> (embeddings — через <code>embedding_factory()</code>), метрики переехали в{' '}
+            <code>ragas.metrics.collections</code> и считаются вызовом <code>ascore(...)</code> с именованными полями
+            вместо <code>SingleTurnSample</code>. Результат — <code>MetricResult</code>, число лежит в{' '}
+            <code>.value</code>. На смену <code>evaluate()</code> для прогона по датасету пришёл декоратор{' '}
+            <code>@experiment</code>.
+          </p>
+        </Callout>
+        <CodeBlock
+          language="python"
+          title="faithfulness_v04.py — то же на API ragas 0.4"
+          code={`from openai import AsyncOpenAI
+from ragas.llms import llm_factory
+from ragas.metrics.collections import Faithfulness
+
+client = AsyncOpenAI()
+evaluator_llm = llm_factory("gpt-4o-mini", client=client, temperature=0)
+
+faithfulness = Faithfulness(llm=evaluator_llm)
+result = await faithfulness.ascore(
+    user_input=item["question"],
+    response=answer,
+    retrieved_contexts=contexts,
+)
+print(result.value)  # MetricResult → число`}
+        />
       </Section>
 
       <Section title="Шаг 4: полный прогон по golden dataset">

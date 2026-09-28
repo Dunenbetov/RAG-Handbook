@@ -35,7 +35,7 @@ export function GlossaryPage() {
   }, [query, filter])
 
   return (
-    <div className="mx-auto max-w-4xl px-5 pb-24 pt-10 md:px-8">
+    <div className="mx-auto max-w-screen-2xl px-5 pb-24 pt-10 md:px-10 xl:px-14">
       <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}>
         <h1 className="mb-2 text-3xl font-extrabold text-title md:text-4xl">Глоссарий</h1>
         <p className="mb-8 text-muted">

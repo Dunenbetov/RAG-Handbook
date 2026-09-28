@@ -68,4 +68,32 @@ export const lessonComponents: Record<string, LazyExoticComponent<ComponentType>
   'ch7/critic-skill': lazy(() => import('./ch7/critic-skill')),
   'ch7/pitfalls': lazy(() => import('./ch7/pitfalls')),
   'ch7/checklist': lazy(() => import('./ch7/checklist')),
+
+  'ch8/workflow-vs-agent': lazy(() => import('./ch8/workflow-vs-agent')),
+  'ch8/stategraph': lazy(() => import('./ch8/stategraph')),
+  'ch8/tools-reflection': lazy(() => import('./ch8/tools-reflection')),
+  'ch8/hitl': lazy(() => import('./ch8/hitl')),
+  'ch8/seminar-ace': lazy(() => import('./ch8/seminar-ace')),
+  'ch8/quiz': lazy(() => import('./ch8/quiz')),
+
+  'ch9/observability': lazy(() => import('./ch9/observability')),
+  'ch9/traces': lazy(() => import('./ch9/traces')),
+  'ch9/tools': lazy(() => import('./ch9/tools')),
+  'ch9/evals': lazy(() => import('./ch9/evals')),
+  'ch9/ab-testing': lazy(() => import('./ch9/ab-testing')),
+  'ch9/quiz': lazy(() => import('./ch9/quiz')),
+
+  'ch10/context-engineering': lazy(() => import('./ch10/context-engineering')),
+  'ch10/agentic-rag': lazy(() => import('./ch10/agentic-rag')),
+  'ch10/structured-output': lazy(() => import('./ch10/structured-output')),
+  'ch10/multi-agent-a2a': lazy(() => import('./ch10/multi-agent-a2a')),
+  'ch10/seminar-extractor': lazy(() => import('./ch10/seminar-extractor')),
+  'ch10/quiz': lazy(() => import('./ch10/quiz')),
+
+  'ch11/rubric': lazy(() => import('./ch11/rubric')),
+  'ch11/request-path': lazy(() => import('./ch11/request-path')),
+  'ch11/concept-map': lazy(() => import('./ch11/concept-map')),
+  'ch11/metrics-story': lazy(() => import('./ch11/metrics-story')),
+  'ch11/hard-questions': lazy(() => import('./ch11/hard-questions')),
+  'ch11/quiz': lazy(() => import('./ch11/quiz')),
 }

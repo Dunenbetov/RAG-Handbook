@@ -1,5 +1,5 @@
 import type { LucideIcon } from 'lucide-react'
-import { AudioLines, BarChart3, Blocks, Cable, Rocket, Sprout, Trophy } from 'lucide-react'
+import { Activity, AudioLines, BarChart3, Blocks, Cable, Network, Presentation, Rocket, Sprout, Trophy, Workflow } from 'lucide-react'
 
 export interface LessonMeta {
   id: string
@@ -155,6 +155,70 @@ export const chapters: Chapter[] = [
       { id: 'checklist', title: 'Чек-лист сдачи', description: 'Интерактивный список по рубрике Project 5', minutes: 5 },
     ],
   },
+  {
+    id: 'ch8',
+    num: 8,
+    title: 'Агенты на LangGraph',
+    subtitle: 'StateGraph, циклы, tool calling, self-reflection и human-in-the-loop',
+    week: 'Модуль 6',
+    icon: Workflow,
+    lessons: [
+      { id: 'workflow-vs-agent', title: 'Workflow или агент', description: 'От цепочки к графу, 5 паттернов Anthropic, когда граф не нужен', minutes: 9 },
+      { id: 'stategraph', title: 'StateGraph: состояние, узлы, рёбра', description: 'Reducers, conditional edges, Command + пошаговый прогон', minutes: 12 },
+      { id: 'tools-reflection', title: 'Tool calling и self-reflection', description: 'ReAct в графе, ToolNode, критик и лимит итераций', minutes: 11 },
+      { id: 'hitl', title: 'Checkpointer и human-in-the-loop', description: 'interrupt, Command(resume), thread_id, time travel', minutes: 12 },
+      { id: 'seminar-ace', title: 'Семинар: self-evolving OSINT-агент', description: 'ACE: Generator → Reflector → Curator', minutes: 10 },
+      { id: 'quiz', title: 'Квиз: LangGraph', description: 'Графы, состояние и HITL', minutes: 6 },
+    ],
+  },
+  {
+    id: 'ch9',
+    num: 9,
+    title: 'LLMOps: трейсинг и evals',
+    subtitle: 'Langfuse, LangSmith, Phoenix, golden dataset, LLM-as-judge и честные A/B',
+    week: 'Модуль 7',
+    icon: Activity,
+    lessons: [
+      { id: 'observability', title: 'LLMOps и observability', description: 'Цикл LLMOps, OpenTelemetry, OpenInference', minutes: 8 },
+      { id: 'traces', title: 'Trace, span, generation, session', description: 'Анатомия трейса + интерактивное дерево', minutes: 11 },
+      { id: 'tools', title: 'Langfuse, LangSmith, Phoenix', description: 'Интеграция в коде и типичные ошибки', minutes: 11 },
+      { id: 'evals', title: 'Golden dataset и LLM-as-judge', description: 'Offline/online evals, метрики, смещения судьи', minutes: 12 },
+      { id: 'ab-testing', title: 'A/B-эксперименты без самообмана', description: 'Шум, доверительный интервал, базовые уровни + калькулятор', minutes: 11 },
+      { id: 'quiz', title: 'Квиз: LLMOps', description: 'Трейсы, evals и эксперименты', minutes: 6 },
+    ],
+  },
+  {
+    id: 'ch10',
+    num: 10,
+    title: 'Agentic RAG и мультиагенты',
+    subtitle: 'Context engineering, structured output, A2A и Extractor-агент',
+    week: 'Модуль 8',
+    icon: Network,
+    lessons: [
+      { id: 'context-engineering', title: 'Context engineering', description: 'Write/Select/Compress/Isolate, память, context rot', minutes: 9 },
+      { id: 'agentic-rag', title: 'Advanced vs Agentic RAG', description: 'ReAct-поиск, CRAG, Self-RAG, query rewriting', minutes: 10 },
+      { id: 'structured-output', title: 'Structured output и извлечение', description: 'strict JSON Schema, Pydantic/Zod, валидация и retry', minutes: 10 },
+      { id: 'multi-agent-a2a', title: 'Мультиагенты и протокол A2A', description: 'Топологии, когда не нужны, MCP vs A2A vs LangGraph', minutes: 11 },
+      { id: 'seminar-extractor', title: 'Семинар: Extractor-агент', description: 'Калибровка → эскалация: VLM-судья на 3 страницах', minutes: 10 },
+      { id: 'quiz', title: 'Квиз: Agentic RAG', description: 'Контекст, агенты и протоколы', minutes: 6 },
+    ],
+  },
+  {
+    id: 'ch11',
+    num: 11,
+    title: 'Защита Final Project',
+    subtitle: 'RemarkRound на Demo Day: рубрика, архитектура, цифры и трудные вопросы',
+    week: 'Demo Day',
+    icon: Presentation,
+    lessons: [
+      { id: 'rubric', title: 'ТЗ, рубрика и питч за 10 минут', description: 'Что оценивают менторы и как построить рассказ', minutes: 8 },
+      { id: 'request-path', title: 'Путь одного замечания', description: 'Граф triage от ingest до persist — пошагово', minutes: 10 },
+      { id: 'concept-map', title: 'Концепты курса в remark-round', description: 'Каждый модуль ТЗ → файл в репозитории', minutes: 9 },
+      { id: 'metrics-story', title: 'Метрики и A/B: честные цифры', description: 'Что говорить про golden, шум и цену', minutes: 10 },
+      { id: 'hard-questions', title: 'Вопросы-ловушки', description: 'Флеш-карты: где агент, почему не long context и др.', minutes: 12 },
+      { id: 'quiz', title: 'Финальный квиз', description: 'Сквозная проверка перед защитой', minutes: 8 },
+    ],
+  },
 ]
 
 export function getChapter(chapterId: string): Chapter | undefined {
@@ -169,30 +233,6 @@ export function getLesson(chapterId: string, lessonId: string) {
 
 export function lessonKey(chapterId: string, lessonId: string) {
   return `${chapterId}/${lessonId}`
-}
-
-const PROJECT_GUIDE_CHAPTERS: Record<string, string[]> = {
-  ch4: ['ch0', 'ch1', 'ch2', 'ch3'],
-  ch7: ['ch5', 'ch6'],
-}
-
-function chapterLessonsComplete(chapterId: string, done: Set<string>) {
-  const chapter = getChapter(chapterId)
-  if (!chapter) return true
-  return chapter.lessons.every((l) => done.has(lessonKey(chapterId, l.id)))
-}
-
-/** Гиды по проектам открываются после прохождения указанных глав */
-export function isChapterLocked(chapterId: string, done: Set<string>) {
-  const required = PROJECT_GUIDE_CHAPTERS[chapterId]
-  if (!required) return false
-  return required.some((id) => !chapterLessonsComplete(id, done))
-}
-
-export function getChapterLockHint(chapterId: string): string {
-  if (chapterId === 'ch4') return 'Откроется после глав 0–3 (RAG и оценивание)'
-  if (chapterId === 'ch7') return 'Откроется после глав 5–6 (MCP и мультимодальность)'
-  return 'Откроется после прохождения предыдущих глав'
 }
 
 /** Плоский список всех уроков в порядке прохождения */

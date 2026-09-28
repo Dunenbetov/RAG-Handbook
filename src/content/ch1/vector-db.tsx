@@ -38,6 +38,19 @@ export default function Lesson() {
           Второй популярный подход — IVF (Inverted File Index): пространство заранее разбивается на кластеры, и поиск идёт
           только внутри нескольких ближайших кластеров. HNSW используется в ChromaDB, Qdrant и pgvector.
         </p>
+        <p>
+          У HNSW три ручки. Две задаются <strong>при построении</strong> индекса (поменять можно только перестройкой), одна
+          — <strong>при запросе</strong>. Все три меняют один и тот же баланс: полнота поиска (recall) против скорости и
+          памяти. Значения по умолчанию ниже — из pgvector.
+        </p>
+        <Tbl
+          head={['Параметр', 'Когда', 'Что это', 'Больше значение →']}
+          rows={[
+            ['m (16)', 'Построение', 'Максимум связей у узла на слое графа', 'Выше recall, но больше памяти и медленнее построение'],
+            ['ef_construction (64)', 'Построение', 'Сколько кандидатов держим, выбирая соседей нового узла', 'Качественнее граф и выше recall, медленнее построение и вставка; в pgvector нужно ef_construction ≥ 2·m'],
+            ['ef_search (40)', 'Запрос', 'Сколько кандидатов держим при поиске', 'Выше recall, медленнее запрос; в pgvector меняется на лету: SET hnsw.ef_search'],
+          ]}
+        />
       </Section>
 
       <Section title="Кого выбрать: обзор рынка">
@@ -95,6 +108,59 @@ results = collection.query(
           документе, только на определённых страницах или только в таблицах. Дёшево и мощно: половина «магии» продвинутых
           RAG-систем — это просто грамотные метаданные.
         </p>
+      </Section>
+
+      <Section title="pgvector: векторы прямо в Postgres">
+        <p>
+          Если Postgres уже есть в стеке, отдельная векторная база часто не нужна. Расширение pgvector добавляет тип{' '}
+          <code>vector</code>, операторы расстояния (<code>{'<=>'}</code> — косинусное) и индексы HNSW и IVFFlat. Векторы
+          лежат в той же транзакции и той же таблице, что и остальные данные, а фильтр по метаданным — обычный{' '}
+          <code>WHERE</code>.
+        </p>
+        <CodeBlock
+          language="sql"
+          title="pgvector — таблица, HNSW-индекс и поиск с фильтром"
+          code={`CREATE EXTENSION IF NOT EXISTS vector;
+
+CREATE TABLE chunks (
+  id         bigserial PRIMARY KEY,
+  project_id int NOT NULL,
+  content    text NOT NULL,
+  embedding  vector(1536)          -- text-embedding-3-small
+);
+
+-- m и ef_construction фиксируются при построении индекса
+CREATE INDEX ON chunks USING hnsw (embedding vector_cosine_ops)
+  WITH (m = 16, ef_construction = 64);
+
+SET hnsw.ef_search = 40;                  -- параметр запроса
+SET hnsw.iterative_scan = strict_order;   -- pgvector >= 0.8, см. ниже
+
+SELECT id, content, 1 - (embedding <=> $1) AS score   -- score = 1 − косинусное расстояние
+FROM chunks
+WHERE project_id = $2
+ORDER BY embedding <=> $1
+LIMIT 6;`}
+        />
+        <ul>
+          <li>
+            <strong>Лимиты размерности.</strong> Сам тип <code>vector</code> хранит до 16 000 измерений. Индексы HNSW и
+            IVFFlat строятся только до 2000 измерений для <code>vector</code> и до 4000 для <code>halfvec</code>
+            (половинная точность). Поэтому 1536 измерений индексируются как есть, а для 3072-мерного
+            text-embedding-3-large нужен <code>halfvec</code> или урезанная размерность.
+          </li>
+          <li>
+            <strong>Фильтр + ANN-индекс.</strong> При приближённом индексе <code>WHERE</code> применяется{' '}
+            <em>после</em> обхода индекса. Если условию соответствует 10% строк, то при <code>ef_search = 40</code> в
+            среднем останется около 4 результатов вместо запрошенных. С версии 0.8 это лечится iterative index scans (
+            <code>hnsw.iterative_scan = strict_order | relaxed_order</code>): индекс дочитывается, пока не наберётся
+            нужное число строк. Другие варианты: частичный индекс под частый фильтр или партиционирование.
+          </li>
+          <li>
+            <strong>Маленький корпус.</strong> На сотнях строк планировщик Postgres может вообще не пойти в HNSW и выбрать
+            последовательное сканирование, то есть точный перебор. Какой план выбран, покажет <code>EXPLAIN</code>.
+          </li>
+        </ul>
       </Section>
 
       <ProjectNote>

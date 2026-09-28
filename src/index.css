@@ -110,5 +110,5 @@ body {
   @apply text-accent underline decoration-accent/40 underline-offset-4 hover:decoration-accent;
 }
 .lesson-body code:not(pre code) {
-  @apply rounded-md border border-line bg-surface-2 px-1.5 py-0.5 font-mono text-[0.85em] text-accent;
+  @apply rounded-md border border-line bg-surface-2 px-1.5 py-0.5 font-mono text-[0.85em] text-accent [overflow-wrap:anywhere];
 }

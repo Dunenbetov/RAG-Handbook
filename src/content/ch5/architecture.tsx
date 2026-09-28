@@ -43,8 +43,9 @@ export default function Lesson() {
         </p>
         <Callout type="tip">
           <p>
-            Когда LLM вызывает <code>get_weather</code>, host знает, какому client'у принадлежит этот tool (при
-            инициализации clients регистрируют свои capabilities). Маршрутизация прозрачна для модели.
+            Когда LLM вызывает <code>get_weather</code>, host знает, какому client'у принадлежит этот tool: после
+            handshake каждый client получил от своего server список через <code>tools/list</code>. Маршрутизация
+            прозрачна для модели.
           </p>
         </Callout>
       </Section>
@@ -69,13 +70,29 @@ export default function Lesson() {
             children: (
               <ul>
                 <li>Server живёт в облаке или на другой машине</li>
-                <li>HTTP POST + SSE для streaming-ответов</li>
+                <li>Один HTTP-endpoint: запросы идут POST, ответ — JSON или SSE-поток</li>
                 <li>Context7, Figma, Sentry — типичные remote servers</li>
                 <li>Нужна авторизация (OAuth, API key)</li>
               </ul>
             ),
           }}
         />
+        <Callout type="warn" title="Не путай со старым HTTP+SSE">
+          <p>
+            В спецификации есть ровно два стандартных транспорта: <strong>stdio</strong> и <strong>Streamable HTTP</strong>.
+            До Streamable HTTP удалённый транспорт назывался HTTP+SSE (ревизия 2024-11-05): два endpoint'а, долгоживущий GET-поток
+            SSE для сообщений от server и отдельный POST для сообщений client. В ревизии 2025-03-26 его заменил
+            Streamable HTTP с одним endpoint, а HTTP+SSE объявлен deprecated: SDK держат его только ради обратной
+            совместимости, новые серверы на нём не пишут.
+          </p>
+          <p>
+            Текущая ревизия 2026-07-28 упростила протокол ещё раз: из Streamable HTTP убраны протокольные сессии (
+            <code>Mcp-Session-Id</code>) и отдельный GET-поток, а handshake <code>initialize</code> заменён метаданными в
+            каждом запросе и методом <code>server/discover</code>. При этом <code>@modelcontextprotocol/sdk</code> 1.29 (стоит в
+            remark-round) реализует ревизию 2025-11-25, с <code>initialize</code> и сессиями. На защите называй ту
+            ревизию, которую поддерживает твой SDK.
+          </p>
+        </Callout>
         <CodeBlock
           language="json"
           title=".mcp.json — локальный STDIO-сервер"
@@ -113,7 +130,7 @@ export default function Lesson() {
         <Tbl
           head={['Method', 'Кто шлёт', 'Зачем']}
           rows={[
-            ['initialize', 'Client → Server', 'Handshake: версия протокола, capabilities'],
+            ['initialize', 'Client → Server', 'Handshake: версия протокола, capabilities (ревизии до 2025-11-25; в 2026-07-28 заменён на server/discover)'],
             ['tools/list', 'Client → Server', 'Получить список доступных tools'],
             ['tools/call', 'Client → Server', 'Выполнить tool с аргументами'],
             ['resources/list', 'Client → Server', 'Список URI-ресурсов'],

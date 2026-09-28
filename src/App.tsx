@@ -5,16 +5,14 @@ import { AccountDialog } from './components/account/AccountDialog'
 import { Home } from './pages/Home'
 import { LessonPage } from './pages/LessonPage'
 import { GlossaryPage } from './pages/GlossaryPage'
-import { getChapter, isChapterLocked } from './lib/curriculum'
-import { useProgress } from './lib/progress'
+import { getChapter } from './lib/curriculum'
 import { ProfilePage } from './pages/ProfilePage'
 
 /** /ch1 → первый урок главы */
 function ChapterRedirect() {
   const { chapterId = '' } = useParams()
   const chapter = getChapter(chapterId)
-  const progress = useProgress()
-  if (!chapter || isChapterLocked(chapterId, progress.done)) return <Navigate to="/" replace />
+  if (!chapter) return <Navigate to="/" replace />
   return <Navigate to={`/${chapter.id}/${chapter.lessons[0].id}`} replace />
 }
 

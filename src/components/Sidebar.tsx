@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react'
 import { Link, NavLink, useLocation } from 'react-router-dom'
 import { AnimatePresence, motion } from 'framer-motion'
-import { BookMarked, BrainCircuit, Check, ChevronDown, Flame, Lock, Menu, UserRound, X } from 'lucide-react'
-import { chapters, getChapterLockHint, isChapterLocked, lessonKey } from '../lib/curriculum'
+import { BookMarked, BrainCircuit, Check, ChevronDown, Flame, Menu, UserRound, X } from 'lucide-react'
+import { chapters, lessonKey } from '../lib/curriculum'
 import { useProgress } from '../lib/progress'
 import { ThemeToggle } from './ThemeToggle'
 import { useAccount } from '../lib/account'
@@ -18,35 +18,24 @@ function ChapterGroup({
 }) {
   const chapter = chapters.find((c) => c.id === chapterId)!
   const progress = useProgress()
-  const locked = isChapterLocked(chapterId, progress.done)
-  const [open, setOpen] = useState(forceOpen && !locked)
+  const [open, setOpen] = useState(forceOpen)
   const doneCount = chapter.lessons.filter((l) => progress.isDone(lessonKey(chapter.id, l.id))).length
 
   return (
     <div className="mb-1">
       <button
-        onClick={() => !locked && setOpen((v) => !v)}
-        disabled={locked}
-        title={locked ? getChapterLockHint(chapterId) : undefined}
-        className={`flex w-full items-center gap-2 rounded-lg px-3 py-2 text-left text-[13.5px] font-semibold transition-colors ${
-          locked ? 'cursor-not-allowed text-muted/60' : 'text-ink hover:bg-surface-2'
-        }`}
+        onClick={() => setOpen((v) => !v)}
+        className="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-left text-[13.5px] font-semibold text-ink transition-colors hover:bg-surface-2"
       >
-        <chapter.icon className={`size-4 shrink-0 ${locked ? 'text-muted/60' : 'text-accent'}`} />
+        <chapter.icon className="size-4 shrink-0 text-accent" />
         <span className="flex-1 truncate">{chapter.title}</span>
-        {locked ? (
-          <Lock className="size-3.5 shrink-0 text-muted/60" />
-        ) : (
-          <>
-            <span className={`text-[11px] font-medium ${doneCount === chapter.lessons.length ? 'text-good' : 'text-muted'}`}>
-              {doneCount}/{chapter.lessons.length}
-            </span>
-            <ChevronDown className={`size-4 text-muted transition-transform ${open ? 'rotate-180' : ''}`} />
-          </>
-        )}
+        <span className={`text-[11px] font-medium ${doneCount === chapter.lessons.length ? 'text-good' : 'text-muted'}`}>
+          {doneCount}/{chapter.lessons.length}
+        </span>
+        <ChevronDown className={`size-4 text-muted transition-transform ${open ? 'rotate-180' : ''}`} />
       </button>
       <AnimatePresence initial={false}>
-        {open && !locked && (
+        {open && (
           <motion.div
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: 'auto', opacity: 1 }}

@@ -62,8 +62,8 @@ search_restaurants(query: str, lat: float, lon: float) -> list`}
 
       <Section title="Resources — данные по URI">
         <p>
-          <strong>Resources</strong> — read-only данные с URI-адресом. Host или модель запрашивает ресурс по URI и
-          получает контент: текст, JSON, бинарник. Никаких side-effects — только чтение.
+          <strong>Resources</strong> — read-only данные с URI-адресом. Host запрашивает ресурс по URI и получает контент:
+          текст, JSON, бинарник. Никаких side-effects — только чтение.
         </p>
         <CodeBlock
           language="text"
@@ -124,6 +124,13 @@ def code_review(language: str, code: str) -> str:
             ['Сделать скриншот страницы', 'Tool', 'Действие в браузере'],
           ]}
         />
+        <Callout type="info" title="Кто управляет примитивом">
+          <p>
+            По спецификации MCP tools — <strong>model-controlled</strong> (вызвать ли tool, решает модель), resources —{' '}
+            <strong>application-driven</strong> (что подгрузить в контекст, решает host), prompts —{' '}
+            <strong>user-controlled</strong> (пользователь выбирает шаблон, например slash-командой).
+          </p>
+        </Callout>
         <Callout type="info">
           <p>
             На практике большинство MCP-серверов экспортируют только tools. Resources добавляют, когда есть стабильные

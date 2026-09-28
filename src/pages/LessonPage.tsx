@@ -2,7 +2,7 @@ import { Suspense, useEffect } from 'react'
 import { Link, Navigate, useParams } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { ArrowLeft, ArrowRight, Check, Clock } from 'lucide-react'
-import { getAdjacent, getLesson, isChapterLocked, lessonKey } from '../lib/curriculum'
+import { getAdjacent, getLesson, lessonKey } from '../lib/curriculum'
 import { markDone, markUndone, useProgress } from '../lib/progress'
 import { lessonComponents } from '../content'
 
@@ -15,7 +15,7 @@ export function LessonPage() {
     window.scrollTo({ top: 0 })
   }, [chapterId, lessonId])
 
-  if (!found || isChapterLocked(chapterId, progress.done)) return <Navigate to="/" replace />
+  if (!found) return <Navigate to="/" replace />
   const { chapter, lesson } = found
   const key = lessonKey(chapterId, lessonId)
   const done = progress.isDone(key)
@@ -25,7 +25,7 @@ export function LessonPage() {
   const lessonIndex = chapter.lessons.findIndex((l) => l.id === lessonId)
 
   return (
-    <div className="mx-auto max-w-3xl px-5 pb-24 pt-10 md:px-8">
+    <div className="mx-auto max-w-screen-2xl px-5 pb-24 pt-10 md:px-10 xl:px-14">
       {/* шапка урока */}
       <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }}>
         <div className="mb-3 flex flex-wrap items-center gap-2 text-sm">
@@ -78,7 +78,7 @@ export function LessonPage() {
       </div>
 
       {/* навигация */}
-      <div className="mt-10 grid gap-3 border-t border-line pt-8 sm:grid-cols-2">
+      <div className="mt-10 grid grid-cols-1 gap-3 border-t border-line pt-8 sm:grid-cols-2">
         {prev ? (
           <Link
             to={`/${prev.chapter.id}/${prev.lesson.id}`}
